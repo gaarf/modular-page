@@ -3,10 +3,18 @@
 <head>
   <meta http-equiv="X-UA-Compatible" content="IE=8">
   <meta charset="utf-8" />
-  <title>gaarf.info</title>
+
+  <title>gaarf.info - Adrien's corner of the internets</title>
+
+  <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.1/build/reset-fonts/reset-fonts.css&2.8.1/build/base/base-min.css" />
+
+  <style type="text/css" media="screen">
+    html { background-color:#EEE; }
+  </style>
 
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
   <script>
+
   if (!window.console || !console.firebug) {
     var names = ["log", "debug", "info", "warn", "error", "assert", "dir", "dirxml",
     "group", "groupEnd", "time", "timeEnd", "count", "trace", "profile", "profileEnd"];
@@ -15,21 +23,59 @@
     for (var i = 0; i < names.length; ++i)
     window.console[names[i]] = function() {}
   }
+
+  GAARF = {modularPage:{}};
+  GAARF.modularPage = {
+
+    MODULES: {
+      dummy: {
+        title: 'A Dummy Module',
+        initBefore: function() {
+          this.$node.append('<p>this module doesnt do anything fancy</p>');
+        }
+      },
+      flickr: {},
+      twitter: {}
+    },
+
+    baseModule: {
+      initBefore: function(k) {
+        this.$node = $('<li class="loading module '+(this.className || k)+'" />');
+        this.$node.append('<h2>'+(this.title || k)+'</h2>');
+      },
+      initAfter: function(k) {
+        this.$node.removeClass('loading');
+      }
+    },
+
+  };
+
+  $(document).ready(function(){
+
+    var $body = $('body')
+      .append($('<h1>'+document.title+'</h1>'))
+      .append('<p>This page is written entirely in client-side JavaScript. ' + 
+        'Each module is independent and pulls its own data, typically through YQL.</p>');
+
+    var $modules = $('<ul />');
+    
+    $.each(GAARF.modularPage.MODULES, function(k){
+      GAARF.modularPage.baseModule.initBefore.call(this, k);
+      if(this.initBefore) { this.initBefore.call(this, k); }
+      $modules.append(this.$node);
+      GAARF.modularPage.baseModule.initAfter.call(this, k);
+      if(this.initAfter) { this.initAfter.call(this, k); }
+      console.log(this);
+    });
+
+    $body.append($modules);
+  });
+
   </script>
-
-  <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.1/build/reset-fonts/reset-fonts.css&2.8.1/build/base/base-min.css" />
-
-  <style type="text/css" media="screen">
-    html { background-color:#EEE; }
-  </style>
-
 </head>
 <body>
   <noscript>
     Javascript is required!
   </noscript>
-
-  <h1>Hello World</h1>
-
 </body>
 </html>
