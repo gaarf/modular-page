@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=8">
+  <meta charset="utf-8" />
+  <title>gaarf.info</title>
+
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+  <script>
+  if (!window.console || !console.firebug) {
+    var names = ["log", "debug", "info", "warn", "error", "assert", "dir", "dirxml",
+    "group", "groupEnd", "time", "timeEnd", "count", "trace", "profile", "profileEnd"];
+
+    window.console = {};
+    for (var i = 0; i < names.length; ++i)
+    window.console[names[i]] = function() {}
+  }
+  </script>
+
+  <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.1/build/reset-fonts/reset-fonts.css&2.8.1/build/base/base-min.css" />
+
+  <style type="text/css" media="screen">
+    html { background-color:#EEE; }
+  </style>
+
+</head>
+<body>
+  <noscript>
+    Javascript is required!
+  </noscript>
+
+  <h1>Hello World</h1>
+
+</body>
+</html>
