@@ -4,10 +4,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=8">
   <meta charset="utf-8" />
 
-  <title>gaarf.info - my corner of the internets</title>
+  <title>my corner of the internets</title>
 
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
   <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.1/build/reset-fonts/reset-fonts.css" />
-
   <style type="text/css" media="screen">
     html {
       background-color: #EEE;
@@ -31,119 +31,137 @@
     .module h2, .module .content {
       padding:3px;
     }
+    
+    ul.modules li.loading {
+      display:none;
+    }
   </style>
 
-  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
   <script>
 
-  (function(argument) {
+  (function(a) {
     if (!window.console || !console.firebug) {
       var names = ["log", "debug", "info", "warn", "error", "assert", "dir", "dirxml",
       "group", "groupEnd", "time", "timeEnd", "count", "trace", "profile", "profileEnd"];
-
       window.console = {};
-      for (var i = 0; i < names.length; ++i)
-      window.console[names[i]] = function() {}
+      for (var i = 0; i < names.length; ++i) { window.console[names[i]] = function() {}; }
     }
   })();
 
-  MODULARPAGE = {
+///////////// MODULE DEFINITION //////////////////////////////////////////////////////////////////////////////
 
-    modules: {
-
-      flickr: {
-        _id: '94765669@N00',
-        _tags: 'flickrrss',
-        dimensions: '100x100',
-        initAfter: function() {
-          var url = 'http://api.flickr.com/services/feeds/photos_public.gne?id='+this._id+'&tags='+this._tags+'&format=json&jsoncallback=?';
-          MODULARPAGE.getJSONp(url,this.sKey);
-        },
-        JSONpCallback: function(data) {
-          console.log(this.sKey,data);
-          this.$content.html(data.toString());
-        }
-      },
-
-      twitter: {
-        _username: 'gaarf',
-        initAfter: function() {
-          var url = 'http://twitter.com/status/user_timeline/'+this._username+'.json?count=10&callback=?';
-          MODULARPAGE.getJSONp(url,this.sKey);
-        },
-        JSONpCallback: function(data) {
-          console.log(this.sKey,data);
-          this.$content.html(data.toString());
-        }
-      },
-
-      dummy: {
-        title: 'A Dummy Module',
-        initBefore: function() {
-          this.$content.text('this module doesnt do anything fancy...');
-        }
-      }
-
-    },
-
-    getJSONp: function(url,k) {
-      console.info('getJSONp', k, url);
-      $.getJSON( url,
-        function(data){
-          var that = MODULARPAGE.modules[k];
-          try {
-            that.JSONpCallback(data);
-            MODULARPAGE.baseModule.doneLoading.call(that);
-          }
-          catch(e) {
-            console.error(e,that);
-          }
-        }
-      );
-    },
-
-    baseModule: {
-      initBefore: function() {
-        this.$node = $('<li class="loading module '+(this.className || this.sKey)+'">' + 
-          '<h2>'+(this.title || this.sKey)+'</h2><div class="content" /></li>');
-        this.$content = this.$node.find('.content');
-        if(this.initBefore) { 
-          console.log(this.sKey,'has initBefore');
-          this.initBefore(); 
-        }
-      },
+  var MODULES = [
+    { 
+      sKey: 'flickr',
+      _ID: '94765669@N00',
+      _TAGS: 'flickrrss',
+      dimensions: '200x100',
       initAfter: function() {
-        if(this.initAfter) { 
-          this.initAfter(); 
-        }
-        else {
-          MODULARPAGE.baseModule.doneLoading.call(this);
-        }
-      },
-      doneLoading: function() {
-        this.$node.removeClass('loading');
+        this.getJSONp('http://api.flickr.com/services/feeds/photos_public.gne?id='+
+          this._ID+'&tags='+this._TAGS+'&format=json&jsoncallback=?');
       }
     },
+    { 
+      sKey: 'twitter',
+      _USERNAME: 'gaarf',
+      initAfter: function() {
+        this.getJSONp('http://twitter.com/status/user_timeline/'+
+          this._USERNAME+'.json?count=10&callback=?');
+      },
+      JSONpCallback: function(data) {
+        this.$content.html((data.length+1)+' Tweets received!');
+      }
+    },
+    { 
+      sKey: 'dummy',
+      className: 'foo',
+      title: 'A Dumb Module',
+      initBefore: function() {
+        this.$content.text('this module doesnt do anything fancy...');
+      }
+    }
+  ];
 
-  };
+///////////// grfModuleSet sort-of-jQuery plugin /////////////////////////////////////////////////////////////
 
-  $(document).ready(function(){
+  (function($) {
+    $.fn.grfModuleSet = function(input){
 
-    var $body = $('body')
-      .append($('<h1>'+document.title+'</h1>'))
+      if(this.length>1 || !this.is('ul') || !(input && input.length)) {
+        throw "You're doing it wrong.";
+      }
+
+      var $modules = this.addClass('modules'), 
+          _modules = {};
+
+      $.each(input, function(){
+        var m = new Module(this);
+        m.init();
+        $modules.append(m.$node);
+        _modules[m.sKey] = m.initAfter() || m;
+      });
+
+      console.debug('live _modules',_modules);
+
+      function Module(o) {
+        return $.extend({
+
+          init: function() {
+            this.$node = $('<li class="loading module '+(this.className || this.sKey)+'">' +
+              '<h2>'+(this.title || this.sKey)+'</h2><div class="content" /></li>');
+            this.$content = this.$node.find('.content');
+            if(this.dimensions) {
+              var d = this.dimensions.split('x');
+              this.$node.css({width:d[0]+'px',height:d[1]+'px'});
+            }
+            if(this.initBefore) { this.initBefore(); }
+          },
+
+          initAfter: function() {
+            console.warn(this.sKey, 'default initAfter');
+            this.doneLoading();
+          },
+
+          doneLoading: function() {
+            this.$node.removeClass('loading');
+          },
+
+          getJSONp: function(url) {
+            var that = this;
+            console.info(this.sKey, 'getJSONp');
+            $.getJSON( url,
+              function(data){
+                try {
+                  that.JSONpCallback(data);
+                  that.doneLoading();
+                }
+                catch(e) {
+                  console.error(e,that);
+                }
+              }
+            );
+          },
+
+          JSONpCallback: function(data) {
+            console.warn(this.sKey, 'default JSONpCallback', data);
+            this.$content.html(data.toString());
+          }
+
+        },o);
+      }
+
+      return this;
+    };
+  })(jQuery);
+
+///////////// DOM ready //////////////////////////////////////////////////////////////////////////////////////
+
+  jQuery(document).ready(function($){
+    $('body')
+      .append('<h1>'+document.title+'</h1>')
       .append('<p>This page is written entirely with client-side technologies. ' + 
-        'Each module is independent and pulls its own data via JSONP.</p>');
-
-    var $modules = $('<ul class="modules" />');
-    
-    $.each(MODULARPAGE.modules, function(k){
-      this.sKey = k;
-      MODULARPAGE.baseModule.initBefore.call(this);
-      $modules.append(this.$node);
-      MODULARPAGE.baseModule.initAfter.call(this);
-    });
-
-    $body.append($modules);
+        'Each module is independent and pulls its own data via JSONP.</p>')
+      .append($('<ul />').grfModuleSet(MODULES));
   });
 
   </script>
