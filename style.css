@@ -1,0 +1,35 @@
+html {
+  background-color: #EEE;
+}
+body {
+  margin: 10px;
+}
+h1 {
+  font-size: 200%;
+  font-weight: bold;
+}
+
+ul.modules {
+  position:relative;
+}
+ul.modules li.module {
+  border: 1px dashed gray;
+  background-color:white;
+  margin:10px 10px 0 0;
+  float:left;
+}
+.module h2 {
+  font-weight: bold;
+  background-color:#CCC;
+  cursor:move;
+}
+.module h2, .module .content {
+  padding:3px;
+}
+
+ul.modules li.loading {
+  display:none;
+}
+ul.modules li.moved {
+  border-style:solid;
+}

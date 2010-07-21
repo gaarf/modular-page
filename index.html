@@ -7,99 +7,21 @@
   <title>my corner of the internets</title>
 
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+  <script type="text/javascript" src="jqdnr.js"></script>
+
   <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.1/build/reset-fonts/reset-fonts.css" />
-  <style type="text/css" media="screen">
-    html {
-      background-color: #EEE;
-    }
-    body {
-      margin: 10px;
-    }
-    h1 {
-      font-size: 200%;
-      font-weight: bold;
-    }
-    ul.modules li.module {
-      border: 1px solid gray;
-      margin:10px 10px 0 0;
-      float:left;
-    }
-    .module h2 {
-      font-weight: bold;
-      background-color:#CCC;
-    }
-    .module h2, .module .content {
-      padding:3px;
-    }
-    
-    ul.modules li.loading {
-      display:none;
-    }
-  </style>
+  <link rel="stylesheet" type="text/css" href="style.css" />
 
   <script>
 
-  (function(a) {
-    if (!window.console || !console.firebug) {
-      var names = ["log", "debug", "info", "warn", "error", "assert", "dir", "dirxml",
-      "group", "groupEnd", "time", "timeEnd", "count", "trace", "profile", "profileEnd"];
-      window.console = {};
-      for (var i = 0; i < names.length; ++i) { window.console[names[i]] = function() {}; }
-    }
-  })();
-
-  /*
-   * jqDnR - Minimalistic Drag'n'Resize for jQuery.
-   *
-   * Copyright (c) 2007 Brice Burgess <bhb@iceburg.net>, http://www.iceburg.net
-   * Licensed under the MIT License:
-   * http://www.opensource.org/licenses/mit-license.php
-   * 
-   * $Version: 2007.08.19 +r2 / modified by @gaarf
-   */
-
-(function($){
-
-  var DOWN = 'mousedown', MOVE = 'mousemove', STOP = 'mouseup',
-      jqDnR = { dnr:{}, e:0 }, M = jqDnR.dnr, E = jqDnR.e,
-      f = function(k) { return parseInt(E.css(k))||false; },
-      g = function(v) {
-        E = v.data.e;
-        M = {
-         X:f('left')||0, Y:f('top')||0, 
-         W:f('width')||E[0].scrollWidth||0, H:f('height')||E[0].scrollHeight||0,
-         pX:v.pageX, pY:v.pageY, k:v.data.k, o:E.css('opacity')
-        };
-        E.css({opacity:0.7});
-        $(document).bind(MOVE,jqDnR.drag).bind(STOP,jqDnR.stop);
-        return false;
-      },
-      i = function(e,h,k){ return e.each( function(){
-        h = (h) ? $(h,e) : e;
-        h.bind(DOWN, {e:e,k:k}, g);
-      });};
-
-  jqDnR.drag = function(v) {
-    if(M.k == 'drag') {
-      if(E.css('position')!='absolute') {
-        E.css({position:'relative'});
-      }
-      E.css({ left:M.X+v.pageX-M.pX, top:M.Y+v.pageY-M.pY } );
-    }
-    else {
-      E.css({ width:Math.max(v.pageX-M.pX+M.W,0), height:Math.max(v.pageY-M.pY+M.H,0) });
-    }
-    return false;
-  };
-  jqDnR.stop = function() {
-    E.css('opacity',M.o);
-    $(document).unbind(MOVE,jqDnR.drag).unbind(STOP,jqDnR.stop);
-  };
-
-  $.fn.jqDrag=function(h) { return i(this, h, 'drag'); };
-  $.fn.jqResize=function(h) { return i(this, h, 'resize'); };
-
-})(jQuery);
+  // (function(a) {
+  //   if (!window.console || !console.firebug) {
+  //     var names = ["log", "debug", "info", "warn", "error", "assert", "dir", "dirxml",
+  //     "group", "groupEnd", "time", "timeEnd", "count", "trace", "profile", "profileEnd"];
+  //     window.console = {};
+  //     for (var i = 0; i < names.length; ++i) { window.console[names[i]] = function() {}; }
+  //   }
+  // })();
 
 ///////////// MODULE DEFINITION //////////////////////////////////////////////////////////////////////////////
 
@@ -108,7 +30,7 @@
       sKey: 'flickr',
       _ID: '94765669@N00',
       _TAGS: 'flickrrss',
-      dimensions: '200x300',
+      css: {height:'200px',width:'300px'},
       initAfter: function() {
         this.getJSONp('http://api.flickr.com/services/feeds/photos_public.gne?id='+
           this._ID+'&tags='+this._TAGS+'&format=json&jsoncallback=?');
@@ -117,6 +39,7 @@
     { 
       sKey: 'twitter',
       _USERNAME: 'gaarf',
+      css: {height:'400px',width:'300px'},
       initAfter: function() {
         this.getJSONp('http://twitter.com/status/user_timeline/'+
           this._USERNAME+'.json?count=10&callback=?');
@@ -154,7 +77,7 @@
         _modules[m.sKey] = m.initAfter() || m;
       });
 
-      console.debug('live _modules',_modules);
+      // console.debug('live _modules',_modules);
 
       function Module(o) {
         return $.extend({
@@ -163,26 +86,31 @@
             this.$node = $('<li class="loading module '+(this.className || this.sKey)+'">' +
               '<h2>'+(this.title || this.sKey)+'</h2><div class="content" /></li>');
             this.$content = this.$node.find('.content');
-            if(this.dimensions) {
-              var d = this.dimensions.split('x');
-              this.$node.css({width:d[0]+'px',height:d[1]+'px'});
+            if(this.css) {
+              this.$node.css(this.css);
             }
-            if(this.initBefore) { this.initBefore(); }
+            if(this.initBefore) { 
+              this.initBefore(); 
+            }
           },
 
           initAfter: function() {
-            console.warn(this.sKey, 'default initAfter');
             this.doneLoading();
           },
 
           doneLoading: function() {
-            this.$node.removeClass('loading');
-            this.$node.jqDrag(this.$node.find('h2'));
+            this.$node
+              .removeClass('loading')
+              .jqDrag(this.$node.find('h2'))
+              .bind('jqDnRstop', function(p){
+                var $m = $(this);
+                console.debug(p,$m,$m.position());
+                $m.addClass('moved');
+              });
           },
 
           getJSONp: function(url) {
             var that = this;
-            console.info(this.sKey, 'getJSONp');
             $.getJSON( url,
               function(data){
                 try {
@@ -197,7 +125,6 @@
           },
 
           JSONpCallback: function(data) {
-            console.warn(this.sKey, 'default JSONpCallback', data);
             this.$content.html(data.toString());
           }
 
