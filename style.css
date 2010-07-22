@@ -41,11 +41,11 @@ ul.grf-modcontainer {
   border-style:outset;
 }
 
-.grf-modcontainer h2 {
+.grf-modcontainer .mod h2 {
   font-weight: bold;
   background-color:#CCC;
+  padding:3px 6px;
 }
-.grf-modcontainer h2, .mod .content {
-  padding:3px;
+.grf-modcontainer .mod .content {
+  padding:6px;
 }
-

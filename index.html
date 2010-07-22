@@ -37,7 +37,6 @@
     },
     { 
       sKey: 'lorem',
-      resizable: true,
       title: 'Lorem ipsum',
       css: {width:'300px'},
       initBefore: function() {
@@ -88,34 +87,34 @@
       }
 
       var $modules = this.addClass('grf-modcontainer'), 
-          _modules = {},
-          z = 1;
+          _modules = {};
 
       // initialize the modules
       $.each(input, function(){
         var m = new Module(this);
         m.init();
-        $modules.append(m.$node.css('z-index',z++));
+        $modules.append(m.$node);
         _modules[m.sKey] = m.initAfter() || m;
       });
-
 
       // register drag event handlers
       $modules
         .bind('jqDnRstart', function(evt){
-          $(evt.target).css('z-index',z++);
+          console.log(evt,evt.target);
         })
         .bind('jqDnRstop', function(evt){
           $(evt.target).addClass('positioned');
         });
 
 
-      // get initial module positions, in a timeout to let browser context settle (?)
+      // initial module positions, in a timeout to let browser context settle
       setTimeout(function(){
-        $modules.children().each(function(){
-          var $m = $(this);
-          console.log($m,$m.position().left);
-        })
+        $.each(_modules,function(){
+          this.$node.css(this.$node.position());
+        });
+        $.each(_modules,function(){
+          this.$node.css('position','absolute');
+        });
       },0);
 
       function Module(o) {
@@ -145,7 +144,7 @@
 
           doneLoading: function() {
             this.$node.removeClass('loading');
-            console.log('doneLoading '+this.sKey,this.$node.position().left);
+            console.log('doneLoading '+this.sKey);
           },
 
           getJSONp: function(url) {

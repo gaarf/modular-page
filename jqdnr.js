@@ -1,54 +1,57 @@
   /*
-   * jqDnR - Minimalistic Drag'n'Resize for jQuery.
+   * jqDnR-touch - Minimalistic Drag'n'Resize for jQuery.
    *
-   * Copyright (c) 2007 Brice Burgess <bhb@iceburg.net>, http://www.iceburg.net
+   * based on work Copyright (c) 2007 Brice Burgess <bhb@iceburg.net>, http://www.iceburg.net
+   *
+   * heavily modified by @gaarf for:
+   *    - touch support
+   *    - z-index upping
+   *    - legibility
+   *
    * Licensed under the MIT License:
    * http://www.opensource.org/licenses/mit-license.php
-   * 
-   * $Version: 2007.08.19 +r2 / heavily modified by @gaarf for touch support
    */
-
-function prettyLog(obj) {
-  var out = obj.toString();
-  for(var i in obj) {
-    out += " "+i+": "+obj[i];
-  }
-  return out;
-}
 
 (function($){
 
-  var DOWN = 'mousedown touchstart', MOVE = 'mousemove touchmove', STOP = 'mouseup touchend',
-      jqDnR = { dnr:{}, e:0, z:1 }, M = jqDnR.dnr, E = jqDnR.e,
-      f = function(k) { return parseInt(E.css(k))||false; },
-      xy = function(v) {
-        var y = v.pageY, 
-            x = v.pageX, 
-            t = v.originalEvent.targetTouches;
-        if(t) {
-          x = t[0]['pageX'];
-          y = t[0]['pageY'];
-        }
-        return {x:x,y:y};
-      },
-      g = function(v) {
-        var p = xy(v);
-        E = v.data.e;
-        M = {
-         X:f('left')||0, Y:f('top')||0, 
-         W:f('width')||E[0].scrollWidth||0, H:f('height')||E[0].scrollHeight||0,
-         pX:p.x, pY:p.y, k:v.data.k, o:E.css('opacity')
-        };
-        E.css({opacity:0.7}).trigger('jqDnRstart');
-        $(document).bind(MOVE,jqDnR.drag).bind(STOP,jqDnR.stop);
-        return false;
-      },
-      i = function(e,h,k){ return e.each( function(){
-        h = (h) ? $(h,e).css('cursor',k) : e;
-        h.bind(DOWN, {e:e,k:k}, g);
-      });};
+  var DOWN = 'mousedown touchstart', 
+      MOVE = 'mousemove touchmove', 
+      STOP = 'mouseup touchend',
+      E, M = {}, Z = 1;
 
-  jqDnR.drag = function(v) {
+  function xy(v) {
+    var y = v.pageY, 
+        x = v.pageX, 
+        t = v.originalEvent.targetTouches;
+    if(t) {
+      x = t[0]['pageX'];
+      y = t[0]['pageY'];
+    }
+    return {x:x,y:y};
+  }
+
+  function init(e,h,k){ 
+    return e.each( function(){
+      var $box = $(this),
+          $handle = (h) ? $(h,this).css('cursor',k) : $box;
+      $handle.bind(DOWN, {e:$box,k:k}, onGripStart);
+    });
+  };
+
+  function onGripStart(v) {
+    var p = xy(v), f = function(k) { return parseInt(E.css(k))||false; };
+    E = v.data.e.css('z-index', Z++);
+    M = {
+      X:f('left')||0, Y:f('top')||0, 
+      W:f('width')||E[0].scrollWidth||0, H:f('height')||E[0].scrollHeight||0,
+      pX:p.x, pY:p.y, k:v.data.k, o:E.css('opacity')
+    };
+    E.css({opacity:0.7}).trigger('jqDnRstart');
+    $(document).bind(MOVE,onGripDrag).bind(STOP,onGripStop);
+    return false;
+  };
+
+  function onGripDrag(v) {
     var p = xy(v);
     if(M.k == 'move') { 
       if(E.css('position')!='absolute') {
@@ -62,12 +65,12 @@ function prettyLog(obj) {
     return false;
   };
 
-  jqDnR.stop = function() {
-    $(document).unbind(MOVE,jqDnR.drag).unbind(STOP,jqDnR.stop);
+  function onGripStop() {
+    $(document).unbind(MOVE,onGripDrag).unbind(STOP,onGripStop);
     E.css({opacity:M.o}).trigger('jqDnRstop');
   };
 
-  $.fn.jqDrag = function(h) { return i(this, h, 'move'); };
-  $.fn.jqResize = function(h) { return i(this, h, 'se-resize'); };
+  $.fn.jqDrag = function(h) { return init(this, h, 'move'); };
+  $.fn.jqResize = function(h) { return init(this, h, 'se-resize'); };
 
 })(jQuery);
