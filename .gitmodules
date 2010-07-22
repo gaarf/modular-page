@@ -1,0 +1,3 @@
+[submodule "jqDnR-touch"]
+	path = jqDnR-touch
+	url = git@github.com:gaarf/jqDnR-touch.git
