@@ -35,6 +35,9 @@
       var $box = $(this),
           $handle = (h) ? $(h,this).css('cursor',k) : $box;
       $handle.bind(DOWN, {e:$box,k:k}, onGripStart);
+      if(k=='move') {
+        $box.bind(DOWN,{},function(){$box.css('z-index', Z++);});
+      }
     });
   };
 

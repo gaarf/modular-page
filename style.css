@@ -15,14 +15,18 @@ ul.grf-modcontainer {
 .grf-modcontainer li.mod {
   position:relative; 
   overflow:hidden;
-  border: 1px inset #000; 
+  border: 1px solid #AAA; 
   background-color:white;
   margin:10px 10px 0 0;
   float:left;
 
-  border-radius:3px;
-  -moz-border-radius:3px;
-  -webkit-border-radius:3px;
+  border-radius:0 0 0 6px;
+  -moz-border-radius:0 0 0 6px;
+  -webkit-border-radius:0 0 0 6px;
+  
+  box-shadow: 3px 3px 5px black;
+  -moz-box-shadow: 3px 3px 5px black;
+  -webkit-box-shadow: 3px 3px 5px black;
 }
 .grf-modcontainer li.mod div.resizer {
   position:absolute;
@@ -37,15 +41,16 @@ ul.grf-modcontainer {
 .grf-modcontainer li.loading .content{
   visibility:hidden;
 }
-.grf-modcontainer li.positioned {
-  border-style:outset;
-}
 
 .grf-modcontainer .mod h2 {
   font-weight: bold;
-  background-color:#CCC;
+  background-color:#BBB;
   padding:3px 6px;
 }
 .grf-modcontainer .mod .content {
   padding:6px;
+}
+
+.grf-modcontainer li.positioned h2 {
+  background-color:yellow;
 }
