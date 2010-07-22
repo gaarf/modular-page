@@ -19,6 +19,10 @@ ul.grf-modcontainer {
   background-color:white;
   margin:10px 10px 0 0;
   float:left;
+
+  border-radius:3px;
+  -moz-border-radius:3px;
+  -webkit-border-radius:3px;
 }
 .grf-modcontainer li.mod div.resizer {
   position:absolute;

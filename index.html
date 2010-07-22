@@ -4,7 +4,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=8">
   <meta charset="utf-8" />
 
-  <title>my corner of the internets</title>
+  <title>Gaarf's Modular homepage</title>
 
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
   <script type="text/javascript" src="jqdnr.js"></script>
@@ -39,33 +39,42 @@
       sKey: 'lorem',
       resizable: true,
       title: 'Lorem ipsum',
+      css: {width:'300px'},
       initBefore: function() {
-        this.$content.text('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras purus justo, blandit nec interdum vel, imperdiet eget ante. Donec libero risus, condimentum ut iaculis eu, lacinia et est. Nam hendrerit interdum congue. Phasellus metus eros, sodales quis condimentum facilisis, elementum nec sem. Cras blandit nulla convallis orci euismod tempor laoreet elit mollis. Nullam non sem nec odio sodales aliquam. Phasellus egestas lectus et est tincidunt semper. Nulla facilisi. Fusce pellentesque erat non nunc facilisis sed gravida velit scelerisque. Aenean sed est eros. Ut ut pulvinar massa. Integer ut metus augue, id egestas augue. Phasellus nunc tortor, cursus vitae commodo quis, tempor in erat. Mauris vitae lectus sed lacus lacinia ullamcorper vitae bibendum mauris. Pellentesque ut consectetur lorem. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae...');
-      }
-    },
-    { 
-      sKey: 'twitter',
-      _USERNAME: 'gaarf',
-      resizable: true,
-      css: {height:'400px',width:'300px'},
-      initAfter: function() {
-        this.getJSONp('http://twitter.com/status/user_timeline/'+
-          this._USERNAME+'.json?count=10&callback=?');
+        this.$content.hide().text('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras purus justo, blandit nec interdum vel, imperdiet eget ante. Donec libero risus, condimentum ut iaculis eu, lacinia et est. Nam hendrerit interdum congue. Phasellus metus eros, sodales quis condimentum facilisis, elementum nec sem. Cras blandit nulla convallis orci euismod tempor laoreet elit mollis. Nullam non sem nec odio sodales aliquam. Phasellus egestas lectus et est tincidunt semper. Nulla facilisi. Fusce pellentesque erat non nunc facilisis sed gravida velit scelerisque. Aenean sed est eros. Ut ut pulvinar massa. Integer ut metus augue, id egestas augue. Phasellus nunc tortor, cursus vitae commodo quis, tempor in erat. Mauris vitae lectus sed lacus lacinia ullamcorper vitae bibendum mauris. Pellentesque ut consectetur lorem. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae...');
       },
-      JSONpCallback: function(data) {
-        this.$content.html((data.length+1)+' Tweets received!');
-      }
-    },
-    { 
-      sKey: 'flickr',
-      _ID: '94765669@N00',
-      _TAGS: 'flickrrss',
-      resizable: true,
-      css: {height:'200px',width:'300px'},
       initAfter: function() {
-        this.getJSONp('http://api.flickr.com/services/feeds/photos_public.gne?id='+
-          this._ID+'&tags='+this._TAGS+'&format=json&jsoncallback=?');
-      }
+        this.$content.fadeIn(2222);
+        this.doneLoading();
+      },
+    },
+    // { 
+    //   sKey: 'twitter',
+    //   _USERNAME: 'gaarf',
+    //   resizable: true,
+    //   css: {height:'400px',width:'300px'},
+    //   initAfter: function() {
+    //     this.getJSONp('http://twitter.com/status/user_timeline/'+
+    //       this._USERNAME+'.json?count=10&callback=?');
+    //   },
+    //   JSONpCallback: function(data) {
+    //     this.$content.html((data.length+1)+' Tweets received!');
+    //   }
+    // },
+    // { 
+    //   sKey: 'flickr',
+    //   _ID: '94765669@N00',
+    //   _TAGS: 'flickrrss',
+    //   resizable: true,
+    //   css: {height:'200px',width:'300px'},
+    //   initAfter: function() {
+    //     this.getJSONp('http://api.flickr.com/services/feeds/photos_public.gne?id='+
+    //       this._ID+'&tags='+this._TAGS+'&format=json&jsoncallback=?');
+    //   }
+    // },
+    {
+      sKey: 'hello',
+      html: 'world'
     }
   ];
 
@@ -82,6 +91,7 @@
           _modules = {},
           z = 1;
 
+      // initialize the modules
       $.each(input, function(){
         var m = new Module(this);
         m.init();
@@ -89,8 +99,8 @@
         _modules[m.sKey] = m.initAfter() || m;
       });
 
-      console.debug('live _modules',_modules);
 
+      // register drag event handlers
       $modules
         .bind('jqDnRstart', function(evt){
           $(evt.target).css('z-index',z++);
@@ -98,6 +108,15 @@
         .bind('jqDnRstop', function(evt){
           $(evt.target).addClass('positioned');
         });
+
+
+      // get initial module positions, in a timeout to let browser context settle (?)
+      setTimeout(function(){
+        $modules.children().each(function(){
+          var $m = $(this);
+          console.log($m,$m.position().left);
+        })
+      },0);
 
       function Module(o) {
         return $.extend({
@@ -112,6 +131,9 @@
             if(this.css) {
               this.$node.css(this.css);
             }
+            if(this.html) {
+              this.$content.html(this.html);
+            }
             if(this.initBefore) { 
               this.initBefore(); 
             }
@@ -122,7 +144,8 @@
           },
 
           doneLoading: function() {
-            this.$node.removeClass('loading')
+            this.$node.removeClass('loading');
+            console.log('doneLoading '+this.sKey,this.$node.position().left);
           },
 
           getJSONp: function(url) {
@@ -156,8 +179,7 @@
   jQuery(document).ready(function($){
     $('body')
       .append('<h1>'+document.title+'</h1>')
-      .append('<p>This page is written entirely with client-side technologies. ' + 
-        'Each module is independent and pulls its own data via JSONP.</p>')
+      .append('<p>Modules may pull data via JSONP, and can be dragged/resized.</p>')
       .append($('<ul />').grfModuleSet(MODULES));
   });
 
