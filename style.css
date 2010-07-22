@@ -9,27 +9,39 @@ h1 {
   font-weight: bold;
 }
 
-ul.modules {
+ul.grf-modcontainer {
   position:relative;
 }
-ul.modules li.module {
-  border: 1px dashed gray;
+.grf-modcontainer li.mod {
+  position:relative; 
+  overflow:hidden;
+  border: 1px inset #000; 
   background-color:white;
   margin:10px 10px 0 0;
   float:left;
 }
-.module h2 {
+.grf-modcontainer li.mod div.resizer {
+  position:absolute;
+  bottom:0; right:0;
+  border: 5px solid; 
+  border-color:transparent #CCC #CCC transparent;
+}
+
+.grf-modcontainer li.loading {
+  border-style:dashed;
+}
+.grf-modcontainer li.loading .content{
+  visibility:hidden;
+}
+.grf-modcontainer li.positioned {
+  border-style:outset;
+}
+
+.grf-modcontainer h2 {
   font-weight: bold;
   background-color:#CCC;
-  cursor:move;
 }
-.module h2, .module .content {
+.grf-modcontainer h2, .mod .content {
   padding:3px;
 }
 
-ul.modules li.loading {
-  display:none;
-}
-ul.modules li.moved {
-  border-style:solid;
-}

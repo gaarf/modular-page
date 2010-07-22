@@ -27,18 +27,26 @@
 
   var MODULES = [
     { 
-      sKey: 'flickr',
-      _ID: '94765669@N00',
-      _TAGS: 'flickrrss',
-      css: {height:'200px',width:'300px'},
-      initAfter: function() {
-        this.getJSONp('http://api.flickr.com/services/feeds/photos_public.gne?id='+
-          this._ID+'&tags='+this._TAGS+'&format=json&jsoncallback=?');
+      sKey: 'dummy',
+      className: 'foo',
+      resizable: true,
+      title: 'A Dumb Module',
+      initBefore: function() {
+        this.$content.text('this module doesnt do anything fancy :-(');
+      }
+    },
+    { 
+      sKey: 'lorem',
+      resizable: true,
+      title: 'Lorem ipsum',
+      initBefore: function() {
+        this.$content.text('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras purus justo, blandit nec interdum vel, imperdiet eget ante. Donec libero risus, condimentum ut iaculis eu, lacinia et est. Nam hendrerit interdum congue. Phasellus metus eros, sodales quis condimentum facilisis, elementum nec sem. Cras blandit nulla convallis orci euismod tempor laoreet elit mollis. Nullam non sem nec odio sodales aliquam. Phasellus egestas lectus et est tincidunt semper. Nulla facilisi. Fusce pellentesque erat non nunc facilisis sed gravida velit scelerisque. Aenean sed est eros. Ut ut pulvinar massa. Integer ut metus augue, id egestas augue. Phasellus nunc tortor, cursus vitae commodo quis, tempor in erat. Mauris vitae lectus sed lacus lacinia ullamcorper vitae bibendum mauris. Pellentesque ut consectetur lorem. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae...');
       }
     },
     { 
       sKey: 'twitter',
       _USERNAME: 'gaarf',
+      resizable: true,
       css: {height:'400px',width:'300px'},
       initAfter: function() {
         this.getJSONp('http://twitter.com/status/user_timeline/'+
@@ -49,11 +57,14 @@
       }
     },
     { 
-      sKey: 'dummy',
-      className: 'foo',
-      title: 'A Dumb Module',
-      initBefore: function() {
-        this.$content.text('this module doesnt do anything fancy...');
+      sKey: 'flickr',
+      _ID: '94765669@N00',
+      _TAGS: 'flickrrss',
+      resizable: true,
+      css: {height:'200px',width:'300px'},
+      initAfter: function() {
+        this.getJSONp('http://api.flickr.com/services/feeds/photos_public.gne?id='+
+          this._ID+'&tags='+this._TAGS+'&format=json&jsoncallback=?');
       }
     }
   ];
@@ -67,25 +78,37 @@
         throw "You're doing it wrong.";
       }
 
-      var $modules = this.addClass('modules'), 
-          _modules = {};
+      var $modules = this.addClass('grf-modcontainer'), 
+          _modules = {},
+          z = 1;
 
       $.each(input, function(){
         var m = new Module(this);
         m.init();
-        $modules.append(m.$node);
+        $modules.append(m.$node.css('z-index',z++));
         _modules[m.sKey] = m.initAfter() || m;
       });
 
-      // console.debug('live _modules',_modules);
+      console.debug('live _modules',_modules);
+
+      $modules
+        .bind('jqDnRstart', function(evt){
+          $(evt.target).css('z-index',z++);
+        })
+        .bind('jqDnRstop', function(evt){
+          $(evt.target).addClass('positioned');
+        });
 
       function Module(o) {
         return $.extend({
 
           init: function() {
-            this.$node = $('<li class="loading module '+(this.className || this.sKey)+'">' +
-              '<h2>'+(this.title || this.sKey)+'</h2><div class="content" /></li>');
-            this.$content = this.$node.find('.content');
+            this.$node = $('<li class="loading mod '+(this.className || this.sKey)+'" />');
+            this.$node.jqDrag($('<h2>'+(this.title || this.sKey)+'</h2>').appendTo(this.$node));
+            this.$content = $('<div class="content" />').appendTo(this.$node);
+            if(this.resizable) {
+              this.$node.jqResize($('<div class="resizer" />').appendTo(this.$node));
+            }
             if(this.css) {
               this.$node.css(this.css);
             }
@@ -99,14 +122,7 @@
           },
 
           doneLoading: function() {
-            this.$node
-              .removeClass('loading')
-              .jqDrag(this.$node.find('h2'))
-              .bind('jqDnRstop', function(p){
-                var $m = $(this);
-                console.debug(p,$m,$m.position());
-                $m.addClass('moved');
-              });
+            this.$node.removeClass('loading')
           },
 
           getJSONp: function(url) {

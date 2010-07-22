@@ -19,7 +19,7 @@ function prettyLog(obj) {
 (function($){
 
   var DOWN = 'mousedown touchstart', MOVE = 'mousemove touchmove', STOP = 'mouseup touchend',
-      jqDnR = { dnr:{}, e:0 }, M = jqDnR.dnr, E = jqDnR.e,
+      jqDnR = { dnr:{}, e:0, z:1 }, M = jqDnR.dnr, E = jqDnR.e,
       f = function(k) { return parseInt(E.css(k))||false; },
       xy = function(v) {
         var y = v.pageY, 
@@ -39,18 +39,18 @@ function prettyLog(obj) {
          W:f('width')||E[0].scrollWidth||0, H:f('height')||E[0].scrollHeight||0,
          pX:p.x, pY:p.y, k:v.data.k, o:E.css('opacity')
         };
-        E.css({opacity:0.7});
+        E.css({opacity:0.7}).trigger('jqDnRstart');
         $(document).bind(MOVE,jqDnR.drag).bind(STOP,jqDnR.stop);
         return false;
       },
       i = function(e,h,k){ return e.each( function(){
-        h = (h) ? $(h,e) : e;
+        h = (h) ? $(h,e).css('cursor',k) : e;
         h.bind(DOWN, {e:e,k:k}, g);
       });};
 
   jqDnR.drag = function(v) {
     var p = xy(v);
-    if(M.k == 'd') { 
+    if(M.k == 'move') { 
       if(E.css('position')!='absolute') {
         E.css({position:'relative'});
       }
@@ -67,7 +67,7 @@ function prettyLog(obj) {
     E.css({opacity:M.o}).trigger('jqDnRstop');
   };
 
-  $.fn.jqDrag = function(h) { return i(this, h, 'd'); };
-  $.fn.jqResize = function(h) { return i(this, h, 'r'); };
+  $.fn.jqDrag = function(h) { return i(this, h, 'move'); };
+  $.fn.jqResize = function(h) { return i(this, h, 'se-resize'); };
 
 })(jQuery);
