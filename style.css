@@ -62,6 +62,6 @@ ul.grf-modcontainer {
 .grf-modcontainer li.clearstorage .content {
   font-size:77%; text-align:center;
 }
-.grf-modcontainer li.clearstorage .content button{
+.grf-modcontainer li.clearstorage .content input {
   margin-top:6px;
 }

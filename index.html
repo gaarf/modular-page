@@ -96,9 +96,9 @@
           sKey: 'clearstorage',
           title: 'Local Storage',
           css: {width:'150px'},
-          html: 'This page uses <a href="http://dev.w3.org/html5/webstorage/">Web Storage</a> to remember module positions.<br /><button>clear data and reload</button>',
+          html: 'This page uses <a href="http://dev.w3.org/html5/webstorage/">Web Storage</a> to remember module positions.<br /><input type="button" value="clear data and reload" />',
           initBefore: function() {
-            this.$content.find('button').click(function(){ domStore.clear(); window.location.reload()})
+            this.$content.find('input').click(function(){ domStore.clear(); window.location.reload()})
           }
         });
       }
@@ -166,6 +166,7 @@
               var $c = this.$node, p = {};
               $.map('top left width height z-index'.split(' '),function(prop){ p[prop] = $c.css(prop); });
               console.info('savePosition',p);
+              domStore.removeItem(this.sKey); // workaround QUOTA_EXCEEDED_ERR
               domStore.setItem(this.sKey,$.compactJSON(p));
               return true;
             }
