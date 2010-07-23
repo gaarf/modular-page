@@ -15,7 +15,7 @@ ul.grf-modcontainer {
 .grf-modcontainer li.mod {
   position:relative; 
   overflow:hidden;
-  border: 1px solid #AAA; 
+  border: 1px solid #333; 
   background-color:white;
   margin:10px 10px 0 0;
   float:left;
@@ -50,7 +50,18 @@ ul.grf-modcontainer {
 .grf-modcontainer .mod .content {
   padding:6px;
 }
-
+.grf-modcontainer li.prepositioned h2 {
+  background-color:orange;
+}
 .grf-modcontainer li.positioned h2 {
   background-color:yellow;
+}
+
+
+
+.grf-modcontainer li.clearstorage .content {
+  font-size:77%; text-align:center;
+}
+.grf-modcontainer li.clearstorage .content button{
+  margin-top:6px;
 }

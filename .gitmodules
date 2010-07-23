@@ -1,3 +1,6 @@
 [submodule "jqDnR-touch"]
 	path = lib/jqDnR-touch
 	url = git@github.com:gaarf/jqDnR-touch.git
+[submodule "lib/jquery-json"]
+	path = lib/jquery-json
+	url = http://github.com/raszi/jquery-json.git

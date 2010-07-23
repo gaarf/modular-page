@@ -8,6 +8,7 @@
 
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
   <script type="text/javascript" src="lib/jqDnR-touch/jqdnr.js"></script>
+  <script type="text/javascript" src="lib/jquery-json/jquery.json.src.js"></script>
 
   <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.1/build/reset-fonts/reset-fonts.css" />
   <link rel="stylesheet" type="text/css" href="style.css" />
@@ -87,7 +88,20 @@
       }
 
       var $modules = this.addClass('grf-modcontainer'), 
-          _modules = {};
+          _modules = {},
+          domStore = window.localStorage;
+
+      if(domStore) {
+        input.push({
+          sKey: 'clearstorage',
+          title: 'Local Storage',
+          css: {width:'150px'},
+          html: 'This page uses <a href="http://dev.w3.org/html5/webstorage/">Web Storage</a> to remember module positions.<br /><button>clear data and reload</button>',
+          initBefore: function() {
+            this.$content.find('button').click(function(){ domStore.clear(); window.location.reload()})
+          }
+        });
+      }
 
       // initialize the modules
       $.each(input, function(){
@@ -97,16 +111,6 @@
         _modules[m.sKey] = m.initAfter() || m;
       });
 
-      // register drag event handlers
-      $modules
-        .bind('jqDnRstart', function(evt){
-          console.log(evt,evt.target);
-        })
-        .bind('jqDnRstop', function(evt){
-          $(evt.target).addClass('positioned');
-        });
-
-
       // initial module positions, in a timeout to let browser context settle
       setTimeout(function(){
         $.each(_modules,function(){
@@ -114,28 +118,38 @@
         });
         $.each(_modules,function(){
           this.$node.css('position','absolute');
+          if(this.restorePosition()) {
+            this.$node.addClass('prepositioned');
+          }
+          else {
+            this.savePosition();
+          }
         });
       },0);
+
+      // register drag event handlers
+      $modules
+        .bind('jqDnRstart', function(evt){
+          console.log(evt);
+        })
+        .bind('jqDnRend jqDnRtop', function(evt){
+          console.log(evt);
+          var $m = $(evt.target);
+          _modules[$m.data('sKey')].savePosition();
+          $m.addClass('positioned');
+        });
 
       function Module(o) {
         return $.extend({
 
           init: function() {
-            this.$node = $('<li class="loading mod '+(this.className || this.sKey)+'" />');
+            this.$node = $('<li class="loading mod '+(this.className || this.sKey)+'" />').data('sKey',this.sKey);
             this.$node.jqDrag($('<h2>'+(this.title || this.sKey)+'</h2>').appendTo(this.$node));
             this.$content = $('<div class="content" />').appendTo(this.$node);
-            if(this.resizable) {
-              this.$node.jqResize($('<div class="resizer" />').appendTo(this.$node));
-            }
-            if(this.css) {
-              this.$node.css(this.css);
-            }
-            if(this.html) {
-              this.$content.html(this.html);
-            }
-            if(this.initBefore) { 
-              this.initBefore(); 
-            }
+            if(this.resizable) { this.$node.jqResize($('<div class="resizer" />').appendTo(this.$node)); }
+            if(this.css) { this.$node.css(this.css); }
+            if(this.html) { this.$content.html(this.html); }
+            if(this.initBefore) { this.initBefore(); }
           },
 
           initAfter: function() {
@@ -145,6 +159,26 @@
           doneLoading: function() {
             this.$node.removeClass('loading');
             console.log('doneLoading '+this.sKey);
+          },
+
+          savePosition: function() {
+            if(domStore) {
+              var $c = this.$node, p = {};
+              $.map('top left width height z-index'.split(' '),function(prop){ p[prop] = $c.css(prop); });
+              console.info('savePosition',p);
+              domStore.setItem(this.sKey,$.compactJSON(p));
+              return true;
+            }
+          },
+
+          restorePosition: function() {
+            if(domStore) {
+              var s = $.evalJSON(domStore.getItem(this.sKey));
+              console.log('restorePosition',s);
+              if(s) {
+                return this.$node.css('z-index',s['z-index']).animate(s);
+              }
+            }
           },
 
           getJSONp: function(url) {
