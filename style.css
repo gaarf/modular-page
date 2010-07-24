@@ -1,17 +1,29 @@
 html {
   background-color: #EEE;
 }
+
 body {
-  margin: 10px;
+  width:800px;
+  margin:10px auto;
 }
+strong {
+  font-weight:bold;
+}
+em {
+  font-style:italic;
+}
+
 h1 {
   font-size: 200%;
   font-weight: bold;
+  text-align:center;
 }
 
 ul.grf-modcontainer {
   position:relative;
-}
+/*  background-color:red;
+  height:111px;
+*/}
 .grf-modcontainer li.mod {
   position:relative; 
   overflow:hidden;
@@ -38,14 +50,12 @@ ul.grf-modcontainer {
 .grf-modcontainer li.loading {
   border-style:dashed;
 }
-.grf-modcontainer li.loading .content{
-  visibility:hidden;
-}
 
 .grf-modcontainer .mod h2 {
   font-weight: bold;
   background-color:#BBB;
   padding:3px 6px;
+  white-space:nowrap;
 }
 .grf-modcontainer .mod .content {
   padding:6px;
@@ -57,11 +67,6 @@ ul.grf-modcontainer {
   background-color:yellow;
 }
 
-
-
-.grf-modcontainer li.localstorage .content {
+.grf-modcontainer li.localstorage {
   font-size:77%; text-align:center;
-}
-.grf-modcontainer li.localstorage .content input {
-  margin-top:6px;
 }

@@ -4,14 +4,15 @@
   <meta http-equiv="X-UA-Compatible" content="IE=8">
   <meta charset="utf-8" />
 
-  <title>Gaarf's Modular homepage</title>
+  <title>Gaarf's Modular Homepage</title>
 
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
   <script type="text/javascript" src="lib/jqDnR-touch/jqdnr.js"></script>
-  <script type="text/javascript" src="lib/json2.js"></script>
 
   <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.1/build/reset-fonts/reset-fonts.css" />
   <link rel="stylesheet" type="text/css" href="style.css" />
+
+  <script type="text/javascript" src="modules.js"></script> <!-- module definitions -->
 
   <script>
 
@@ -24,46 +25,6 @@
     }
   })();
 
-///////////// MODULE DEFINITION //////////////////////////////////////////////////////////////////////////////
-
-  var MODULES = [
-    { 
-      sKey: 'lorem',
-      title: 'Lorem ipsum',
-      resizable:true,
-      initBefore: function() {
-        this.$content.text('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras purus justo, blandit nec interdum vel, imperdiet eget ante. Donec libero risus, condimentum ut iaculis eu, lacinia et est. Nam hendrerit interdum congue. Phasellus metus eros, sodales quis condimentum facilisis, elementum nec sem. Cras blandit nulla convallis orci euismod tempor laoreet elit mollis. Nullam non sem nec odio sodales aliquam. Phasellus egestas lectus et est tincidunt semper. Nulla facilisi. Fusce pellentesque erat non nunc facilisis sed gravida velit scelerisque. Aenean sed est eros. Ut ut pulvinar massa. Integer ut metus augue, id egestas augue. Phasellus nunc tortor, cursus vitae commodo quis, tempor in erat. Mauris vitae lectus sed lacus lacinia ullamcorper vitae bibendum mauris. Pellentesque ut consectetur lorem. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae...');
-      },
-      initAfter: function() {
-        this.$content.append('and more!');
-        this.doneLoading();
-      }
-    },
-    { 
-      sKey: 'twitter',
-      _USERNAME: 'gaarf',
-      css: {height:'400px',width:'300px'},
-      resizable: true,
-      initBefore: function() {
-        this.getJSONp('http://twitter.com/status/user_timeline/'+
-          this._USERNAME+'.json?count=10&callback=?');
-      },
-      JSONpCallback: function(data) {
-        this.$content.html((data.length+1)+' Tweets received!');
-      }
-    },
-    { 
-      sKey: 'flickr',
-      _ID: '94765669@N00',
-      _TAGS: 'flickrrss',
-      css: {height:'200px',width:'300px'},
-      initAfter: function() {
-        this.getJSONp('http://api.flickr.com/services/feeds/photos_public.gne?id='+
-          this._ID+'&tags='+this._TAGS+'&format=json&jsoncallback=?');
-      }
-    }
-  ];
-
 ///////////// grfModuleSet sort-of-jQuery plugin /////////////////////////////////////////////////////////////
 
   (function($) {
@@ -73,25 +34,122 @@
         throw "You're doing it wrong.";
       }
 
-      var $modules = this.addClass('grf-modcontainer'), 
+      var $container = this.addClass('grf-modcontainer'), 
           _modules = {},
           domStore = location.protocol.indexOf('http')===0 && window.localStorage;
 
+      function Module(o) {
+        return $.extend({
+
+          init: function() {
+            console.time(this.sKey);
+            this.$node = $('<li class="loading mod '+(this.className || this.sKey)+'" />').data('sKey',this.sKey);
+            this.$node.jqDrag($('<h2>'+(this.title || this.sKey)+'</h2>').appendTo(this.$node));
+            this.$content = $('<div class="content" />').appendTo(this.$node);
+            if(this.resizable) { this.$node.jqResize($('<div class="resizer" />').appendTo(this.$node)); }
+            if(this.css) { this.$node.css(this.css); }
+            if(this.html) { this.$content.html(this.html); }
+            if(this.initBefore) { this.initBefore(); }
+          },
+
+          initAfter: function() {
+            this.doneLoading();
+          },
+
+          doneLoading: function() {
+            this.$node.removeClass('loading');
+            this.savePosition();
+            console.timeEnd(this.sKey);
+          },
+
+          savePosition: function() {
+            if(domStore) {
+              var $c = this.$node, json = '{';
+              $.map('top left width height'.split(' '),
+                    function(v){ json += "\""+[v]+"\":\""+$c.css(v)+"\","; }
+              );
+              json += "\"z\":\""+$c.css('z-index')+"\"}";
+              // console.log(this.sKey, 'savePosition', json);
+              domStore.removeItem(this.sKey); // workaround QUOTA_EXCEEDED_ERR
+              domStore.setItem(this.sKey,json);
+              return true;
+            }
+          },
+
+          restoreSavedPosition: function() {
+            if(domStore) {
+              try {
+                var s = $.parseJSON(domStore.getItem(this.sKey));
+                if(s) {
+                  // console.log(this.sKey,'restorePosition',s);
+                  var that = this, z = s.z || 1; delete s[z];
+                  this.$node
+                        .css('z-index',z)
+                        .animate(s,{
+                          duration: 'slow',
+                          complete: function() { that.initAfter(); }
+                        });
+                  return true;
+                }
+              }
+              catch(e) {
+                console.error('restorePosition failed',e);
+              }
+            }
+            this.initAfter();
+            return false;
+          },
+
+          getJSONp: function(url) {
+            var that = this;
+            $.ajax( {
+              url: url,
+              dataType: 'json',
+              success: function(data){
+                try {
+                  that.JSONpCallback(data);
+                  that.doneLoading();
+                }
+                catch(e) {
+                  console.error(e,that);
+                }
+              },
+              error: function() {
+                alert('getJSONp failed');
+              }
+            } );
+          },
+
+          JSONpCallback: function(data) {
+            this.$content.html(data.toString());
+          }
+
+        },o);
+      }
+
       if(domStore) {
 
-        input.push({
-          sKey: 'localstorage',
-          title: 'Local Storage',
-          css: {width:'150px'},
-          html: 'This page uses <a href="http://dev.w3.org/html5/webstorage/">Web Storage</a> to remember module positions.<br /><input type="button" value="clear data and reload" />',
-          initBefore: function() {
-            this.$content.find('input').click(function(){ domStore.clear(); window.location.reload()})
+        var doReset = domStore.getItem('_ver')!=storageVersion || domStore.getItem('_size')!=input.length;
+        if(!doReset) {
+          var hasClearer = false;
+          $.each(input,function(){
+            if(!domStore.getItem(this.sKey)) { doReset = true; }
+            if(this.sKey=='localstorage') { hasClearer = true; }
+          });
+          if(!hasClearer) {
+            var w = 100, b = $('body').width(); // for positioning to the right of viewport without using right: property
+            input.push({
+              sKey: 'localstorage',
+              title: 'Web Storage',
+              css: {width:w+'px',top:-44,left:(b-w-10+(($(document).width()-b)/2)),position:'absolute'},
+              html: '<input type="button" value="clear &amp; reload" />',
+              initBefore: function() {
+                this.$content.find('input').click(function(){ domStore.clear(); window.location.reload()})
+              }
+            });
           }
-        });
-
-        var d = domStore.getItem('_ver')!=storageVersion || domStore.getItem('_size')!=input.length;
-        if(!d) for (var i = input.length - 1; i >= 0; i--){ if(!domStore.getItem(s = input[i]['sKey'])) { d = true; break; } };
-        if(d) {
+        }
+        if(doReset) {
           console.warn('DOM STORE CLEARANCE! everything must go!');
           domStore.clear();
           domStore.setItem('_ver',storageVersion);
@@ -104,12 +162,12 @@
       $.each(input, function(){
         var m = new Module(this);
         m.init();
-        $modules.append(m.$node);
+        $container.append(m.$node);
         _modules[m.sKey] = m; 
       });
 
       // register drag event handlers
-      $modules
+      $container
         .bind('jqDnRstart', function(evt){
           console.log(evt);
         })
@@ -127,92 +185,11 @@
         });
         $.each(_modules,function(){
           this.$node.css('position','absolute');
-          if(this.restoreSavedPosition('initAfter')) {
+          if(this.restoreSavedPosition()) {
             this.$node.addClass('prepositioned');
           }
         });
       },0);
-
-      function Module(o) {
-        return $.extend({
-
-          init: function() {
-            console.time(this.sKey);
-            this.$node = $('<li class="loading mod '+(this.className || this.sKey)+'" />').data('sKey',this.sKey);
-            this.$node.jqDrag($('<h2>'+(this.title || this.sKey)+'</h2>').appendTo(this.$node));
-            this.$content = $('<div class="content" />').appendTo(this.$node);
-            if(this.resizable) { this.$node.jqResize($('<div class="resizer" />').appendTo(this.$node)); }
-            if(this.css) { this.$node.css(this.css); }
-            if(this.html) { this.$content.html(this.html); }
-            if(this.initBefore) { this.initBefore(); }
-          },
-
-          initAfter: function() {
-            console.log(this.sKey,' default initAfter');
-            this.doneLoading();
-          },
-
-          doneLoading: function() {
-            console.log(this.sKey,' doneLoading');
-            this.$node.removeClass('loading');
-            this.savePosition();
-            console.timeEnd(this.sKey);
-          },
-
-          savePosition: function() {
-            if(domStore) {
-              var $c = this.$node, p = {};
-              $.map('top left width height z-index'.split(' '),function(prop){ p[prop] = $c.css(prop); });
-              console.log(this.sKey, 'savePosition', p);
-              domStore.removeItem(this.sKey); // workaround QUOTA_EXCEEDED_ERR
-              domStore.setItem(this.sKey,JSON.stringify(p));
-              return true;
-            }
-          },
-
-          restoreSavedPosition: function(cb) {
-            if(domStore) {
-              try {
-                var s = JSON.parse(domStore.getItem(this.sKey)), that = this;
-                if(s) {
-                  console.log(this.sKey,'restorePosition',s);
-                  var zk = 'z-index', z = s[zk] || 1;
-                  delete s[zk];
-                  this.$node
-                        .css('z-index',z)
-                        .animate(s,{complete:function() { that[cb](); }});
-                  return true;
-                }
-              }
-              catch(e) {
-                console.error('restorePosition failed',e);
-              }
-            }
-            this[cb]();
-            return false;
-          },
-
-          getJSONp: function(url) {
-            var that = this;
-            $.getJSON( url,
-              function(data){
-                try {
-                  that.JSONpCallback(data);
-                  that.doneLoading();
-                }
-                catch(e) {
-                  console.error(e,that);
-                }
-              }
-            );
-          },
-
-          JSONpCallback: function(data) {
-            this.$content.html(data.toString());
-          }
-
-        },o);
-      }
 
       return this;
     };
@@ -222,9 +199,8 @@
 
   jQuery(document).ready(function($){
     $('body')
-      .append('<h1>'+document.title+'</h1>')
-      .append('<p>Modules may pull data via JSONP, and can be dragged/resized.</p>')
-      .append($('<ul />').grfModuleSet(MODULES, 1));
+      .append( '<h1>'+document.title+'</h1>' )
+      .append( $('<ul />').grfModuleSet(MODULES, 1) );
   });
 
   </script>
