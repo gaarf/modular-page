@@ -8,80 +8,66 @@
 
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
   <script type="text/javascript" src="lib/jqDnR-touch/jqdnr.js"></script>
-  <script type="text/javascript" src="lib/jquery-json/jquery.json.src.js"></script>
+  <script type="text/javascript" src="lib/json2.js"></script>
 
   <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.1/build/reset-fonts/reset-fonts.css" />
   <link rel="stylesheet" type="text/css" href="style.css" />
 
   <script>
 
-  // (function(a) {
-  //   if (!window.console || !console.firebug) {
-  //     var names = ["log", "debug", "info", "warn", "error", "assert", "dir", "dirxml",
-  //     "group", "groupEnd", "time", "timeEnd", "count", "trace", "profile", "profileEnd"];
-  //     window.console = {};
-  //     for (var i = 0; i < names.length; ++i) { window.console[names[i]] = function() {}; }
-  //   }
-  // })();
+  (function(a) {
+    if (!window.console || !console.firebug) {
+      var names = ["log", "debug", "info", "warn", "error", "assert", "dir", "dirxml",
+      "group", "groupEnd", "time", "timeEnd", "count", "trace", "profile", "profileEnd"];
+      window.console = {};
+      for (var i = 0; i < names.length; ++i) { window.console[names[i]] = function() {}; }
+    }
+  })();
 
 ///////////// MODULE DEFINITION //////////////////////////////////////////////////////////////////////////////
 
   var MODULES = [
     { 
-      sKey: 'dummy',
-      className: 'foo',
-      resizable: true,
-      title: 'A Dumb Module',
+      sKey: 'lorem',
+      title: 'Lorem ipsum',
+      resizable:true,
       initBefore: function() {
-        this.$content.text('this module doesnt do anything fancy :-(');
+        this.$content.text('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras purus justo, blandit nec interdum vel, imperdiet eget ante. Donec libero risus, condimentum ut iaculis eu, lacinia et est. Nam hendrerit interdum congue. Phasellus metus eros, sodales quis condimentum facilisis, elementum nec sem. Cras blandit nulla convallis orci euismod tempor laoreet elit mollis. Nullam non sem nec odio sodales aliquam. Phasellus egestas lectus et est tincidunt semper. Nulla facilisi. Fusce pellentesque erat non nunc facilisis sed gravida velit scelerisque. Aenean sed est eros. Ut ut pulvinar massa. Integer ut metus augue, id egestas augue. Phasellus nunc tortor, cursus vitae commodo quis, tempor in erat. Mauris vitae lectus sed lacus lacinia ullamcorper vitae bibendum mauris. Pellentesque ut consectetur lorem. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae...');
+      },
+      initAfter: function() {
+        this.$content.append('and more!');
+        this.doneLoading();
       }
     },
     { 
-      sKey: 'lorem',
-      title: 'Lorem ipsum',
-      css: {width:'300px'},
+      sKey: 'twitter',
+      _USERNAME: 'gaarf',
+      css: {height:'400px',width:'300px'},
+      resizable: true,
       initBefore: function() {
-        this.$content.hide().text('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras purus justo, blandit nec interdum vel, imperdiet eget ante. Donec libero risus, condimentum ut iaculis eu, lacinia et est. Nam hendrerit interdum congue. Phasellus metus eros, sodales quis condimentum facilisis, elementum nec sem. Cras blandit nulla convallis orci euismod tempor laoreet elit mollis. Nullam non sem nec odio sodales aliquam. Phasellus egestas lectus et est tincidunt semper. Nulla facilisi. Fusce pellentesque erat non nunc facilisis sed gravida velit scelerisque. Aenean sed est eros. Ut ut pulvinar massa. Integer ut metus augue, id egestas augue. Phasellus nunc tortor, cursus vitae commodo quis, tempor in erat. Mauris vitae lectus sed lacus lacinia ullamcorper vitae bibendum mauris. Pellentesque ut consectetur lorem. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae...');
+        this.getJSONp('http://twitter.com/status/user_timeline/'+
+          this._USERNAME+'.json?count=10&callback=?');
       },
-      initAfter: function() {
-        this.$content.fadeIn(2222);
-        this.doneLoading();
-      },
+      JSONpCallback: function(data) {
+        this.$content.html((data.length+1)+' Tweets received!');
+      }
     },
-    // { 
-    //   sKey: 'twitter',
-    //   _USERNAME: 'gaarf',
-    //   resizable: true,
-    //   css: {height:'400px',width:'300px'},
-    //   initAfter: function() {
-    //     this.getJSONp('http://twitter.com/status/user_timeline/'+
-    //       this._USERNAME+'.json?count=10&callback=?');
-    //   },
-    //   JSONpCallback: function(data) {
-    //     this.$content.html((data.length+1)+' Tweets received!');
-    //   }
-    // },
-    // { 
-    //   sKey: 'flickr',
-    //   _ID: '94765669@N00',
-    //   _TAGS: 'flickrrss',
-    //   resizable: true,
-    //   css: {height:'200px',width:'300px'},
-    //   initAfter: function() {
-    //     this.getJSONp('http://api.flickr.com/services/feeds/photos_public.gne?id='+
-    //       this._ID+'&tags='+this._TAGS+'&format=json&jsoncallback=?');
-    //   }
-    // },
-    {
-      sKey: 'hello',
-      html: 'world'
+    { 
+      sKey: 'flickr',
+      _ID: '94765669@N00',
+      _TAGS: 'flickrrss',
+      css: {height:'200px',width:'300px'},
+      initAfter: function() {
+        this.getJSONp('http://api.flickr.com/services/feeds/photos_public.gne?id='+
+          this._ID+'&tags='+this._TAGS+'&format=json&jsoncallback=?');
+      }
     }
   ];
 
 ///////////// grfModuleSet sort-of-jQuery plugin /////////////////////////////////////////////////////////////
 
   (function($) {
-    $.fn.grfModuleSet = function(input){
+    $.fn.grfModuleSet = function(input,storageVersion){
 
       if(this.length>1 || !this.is('ul') || !(input && input.length)) {
         throw "You're doing it wrong.";
@@ -89,11 +75,12 @@
 
       var $modules = this.addClass('grf-modcontainer'), 
           _modules = {},
-          domStore = window.localStorage;
+          domStore = location.protocol.indexOf('http')===0 && window.localStorage;
 
       if(domStore) {
+
         input.push({
-          sKey: 'clearstorage',
+          sKey: 'localstorage',
           title: 'Local Storage',
           css: {width:'150px'},
           html: 'This page uses <a href="http://dev.w3.org/html5/webstorage/">Web Storage</a> to remember module positions.<br /><input type="button" value="clear data and reload" />',
@@ -101,6 +88,16 @@
             this.$content.find('input').click(function(){ domStore.clear(); window.location.reload()})
           }
         });
+
+        var d = domStore.getItem('_ver')!=storageVersion || domStore.getItem('_size')!=input.length;
+        if(!d) for (var i = input.length - 1; i >= 0; i--){ if(!domStore.getItem(s = input[i]['sKey'])) { d = true; break; } };
+        if(d) {
+          console.warn('DOM STORE CLEARANCE! everything must go!');
+          domStore.clear();
+          domStore.setItem('_ver',storageVersion);
+          domStore.setItem('_size',input.length);
+        }
+
       }
 
       // initialize the modules
@@ -108,24 +105,8 @@
         var m = new Module(this);
         m.init();
         $modules.append(m.$node);
-        _modules[m.sKey] = m.initAfter() || m;
+        _modules[m.sKey] = m; 
       });
-
-      // initial module positions, in a timeout to let browser context settle
-      setTimeout(function(){
-        $.each(_modules,function(){
-          this.$node.css(this.$node.position());
-        });
-        $.each(_modules,function(){
-          this.$node.css('position','absolute');
-          if(this.restorePosition()) {
-            this.$node.addClass('prepositioned');
-          }
-          else {
-            this.savePosition();
-          }
-        });
-      },0);
 
       // register drag event handlers
       $modules
@@ -139,10 +120,25 @@
           $m.addClass('positioned');
         });
 
+      // set module positions, in a timeout to let browser context settle
+      setTimeout(function(){
+        $.each(_modules,function(){
+          this.$node.css(this.$node.position());
+        });
+        $.each(_modules,function(){
+          this.$node.css('position','absolute');
+          if(this.restorePosition('initAfter')) {
+            console.log(this,'pre position');
+            this.$node.addClass('prepositioned');
+          }
+        });
+      },0);
+
       function Module(o) {
         return $.extend({
 
           init: function() {
+            console.time(this.sKey);
             this.$node = $('<li class="loading mod '+(this.className || this.sKey)+'" />').data('sKey',this.sKey);
             this.$node.jqDrag($('<h2>'+(this.title || this.sKey)+'</h2>').appendTo(this.$node));
             this.$content = $('<div class="content" />').appendTo(this.$node);
@@ -153,33 +149,39 @@
           },
 
           initAfter: function() {
+            console.log(this.sKey,' default initAfter');
             this.doneLoading();
           },
 
           doneLoading: function() {
+            console.log(this.sKey,' doneLoading');
             this.$node.removeClass('loading');
-            console.log('doneLoading '+this.sKey);
+            this.savePosition();
+            console.timeEnd(this.sKey);
           },
 
           savePosition: function() {
             if(domStore) {
               var $c = this.$node, p = {};
               $.map('top left width height z-index'.split(' '),function(prop){ p[prop] = $c.css(prop); });
-              console.info('savePosition',p);
+              console.log(this.sKey, 'savePosition', p);
               domStore.removeItem(this.sKey); // workaround QUOTA_EXCEEDED_ERR
-              domStore.setItem(this.sKey,$.compactJSON(p));
+              domStore.setItem(this.sKey,JSON.stringify(p));
               return true;
             }
           },
 
-          restorePosition: function() {
+          restorePosition: function(cb) {
             if(domStore) {
-              var s = $.evalJSON(domStore.getItem(this.sKey));
-              console.log('restorePosition',s);
+              var s = JSON.parse(domStore.getItem(this.sKey));
               if(s) {
-                return this.$node.css('z-index',s['z-index']).animate(s);
+                console.log(this.sKey,'restorePosition',s);
+                var that = this;
+                return this.$node.css('z-index',s['z-index']).animate(s,{complete:function() { that[cb](); }});
               }
             }
+            this[cb]();
+            return false;
           },
 
           getJSONp: function(url) {
@@ -214,7 +216,7 @@
     $('body')
       .append('<h1>'+document.title+'</h1>')
       .append('<p>Modules may pull data via JSONP, and can be dragged/resized.</p>')
-      .append($('<ul />').grfModuleSet(MODULES));
+      .append($('<ul />').grfModuleSet(MODULES, 1));
   });
 
   </script>
