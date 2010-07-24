@@ -16,7 +16,7 @@
   <script>
 
   (function(a) {
-    if (!window.console || !console.firebug) {
+    if (!window.console) {
       var names = ["log", "debug", "info", "warn", "error", "assert", "dir", "dirxml",
       "group", "groupEnd", "time", "timeEnd", "count", "trace", "profile", "profileEnd"];
       window.console = {};
@@ -127,8 +127,7 @@
         });
         $.each(_modules,function(){
           this.$node.css('position','absolute');
-          if(this.restorePosition('initAfter')) {
-            console.log(this,'pre position');
+          if(this.restoreSavedPosition('initAfter')) {
             this.$node.addClass('prepositioned');
           }
         });
@@ -171,13 +170,22 @@
             }
           },
 
-          restorePosition: function(cb) {
+          restoreSavedPosition: function(cb) {
             if(domStore) {
-              var s = JSON.parse(domStore.getItem(this.sKey));
-              if(s) {
-                console.log(this.sKey,'restorePosition',s);
-                var that = this;
-                return this.$node.css('z-index',s['z-index']).animate(s,{complete:function() { that[cb](); }});
+              try {
+                var s = JSON.parse(domStore.getItem(this.sKey)), that = this;
+                if(s) {
+                  console.log(this.sKey,'restorePosition',s);
+                  var zk = 'z-index', z = s[zk] || 1;
+                  delete s[zk];
+                  this.$node
+                        .css('z-index',z)
+                        .animate(s,{complete:function() { that[cb](); }});
+                  return true;
+                }
+              }
+              catch(e) {
+                console.error('restorePosition failed',e);
               }
             }
             this[cb]();
