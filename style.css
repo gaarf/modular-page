@@ -1,5 +1,6 @@
 html {
-  background-color: #EEE;
+  background: #EEE -moz-linear-gradient( left center, #CCC 0%, #FFF 50%, #CCC 100% );
+  background-image: -webkit-gradient( linear, left top, right top, color-stop(0, #CCC), color-stop(0.5, #FFF), color-stop(1, #CCC) );
 }
 
 body {
@@ -16,14 +17,14 @@ em {
 h1 {
   font-size: 200%;
   font-weight: bold;
-  text-align:center;
 }
 
 ul.grf-modcontainer {
   position:relative;
-/*  background-color:red;
+  -moz-user-select: -moz-none;
+  -webkit-user-select: none;
   height:111px;
-*/}
+}
 .grf-modcontainer li.mod {
   position:relative; 
   overflow:hidden;
@@ -59,6 +60,8 @@ ul.grf-modcontainer {
 }
 .grf-modcontainer .mod .content {
   padding:6px;
+  -moz-user-select: text;
+  -webkit-user-select: text;
 }
 .grf-modcontainer li.prepositioned h2 {
   background-color:orange;
@@ -69,4 +72,22 @@ ul.grf-modcontainer {
 
 .grf-modcontainer li.localstorage {
   font-size:77%; text-align:center;
+}
+
+.grf-modcontainer li.twitter ol li {
+  margin-bottom:1em;
+}
+.grf-modcontainer li.twitter ol li.item0 .text {
+  font-size:150%;
+}
+.grf-modcontainer li.twitter ol .meta {
+  font-size:77%; color:gray;
+  line-height:1em;
+}
+.grf-modcontainer li.twitter ol .meta a {
+  color:gray;
+  text-decoration:none;
+}
+.grf-modcontainer li.twitter ol .meta a:hover {
+  text-decoration:underline;
 }

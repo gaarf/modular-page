@@ -8,6 +8,7 @@
 
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
   <script type="text/javascript" src="lib/jqDnR-touch/jqdnr.js"></script>
+  <script type="text/javascript" src="http://platform.twitter.com/anywhere.js?id=6OBf6rxxfj8QrWs5T3tHw&amp;v=1"></script>
 
   <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.1/build/reset-fonts/reset-fonts.css" />
   <link rel="stylesheet" type="text/css" href="style.css" />
@@ -65,9 +66,9 @@
           savePosition: function() {
             if(domStore) {
               var $c = this.$node, json = '{';
-              $.map('top left width height'.split(' '),
-                    function(v){ json += "\""+[v]+"\":\""+$c.css(v)+"\","; }
-              );
+              $.map('top left width height'.split(' '),function(v){ 
+                json += "\""+[v]+"\":\""+$c.css(v)+"\","; 
+              });
               json += "\"z\":\""+$c.css('z-index')+"\"}";
               // console.log(this.sKey, 'savePosition', json);
               domStore.removeItem(this.sKey); // workaround QUOTA_EXCEEDED_ERR
@@ -93,7 +94,7 @@
                 }
               }
               catch(e) {
-                console.error('restorePosition failed',e);
+                console.error('restoreSavedPosition failed',e);
               }
             }
             this.initAfter();
@@ -141,7 +142,7 @@
             input.push({
               sKey: 'localstorage',
               title: 'Web Storage',
-              css: {width:w+'px',top:-44,left:(b-w-10+(($(document).width()-b)/2)),position:'absolute'},
+              css: {width:w+'px',top:0,left:(b-w-10+(($(document).width()-b)/2)),position:'absolute'},
               html: '<input type="button" value="clear &amp; reload" />',
               initBefore: function() {
                 this.$content.find('input').click(function(){ domStore.clear(); window.location.reload()})
@@ -189,7 +190,7 @@
             this.$node.addClass('prepositioned');
           }
         });
-      },0);
+      },1);
 
       return this;
     };
@@ -199,7 +200,7 @@
 
   jQuery(document).ready(function($){
     $('body')
-      .append( '<h1>'+document.title+'</h1>' )
+      // .append( '<h1>'+document.title+'</h1>' )
       .append( $('<ul />').grfModuleSet(MODULES, 1) );
   });
 
