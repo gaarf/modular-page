@@ -26,13 +26,13 @@
     }
   })();
 
-///////////// grfModuleSet sort-of-jQuery plugin /////////////////////////////////////////////////////////////
+///////////// grf* sort-of-jQuery plugins /////////////////////////////////////////////////////////////
 
   (function($) {
     $.fn.grfModuleSet = function(input,storageVersion){
 
       if(this.length>1 || !this.is('ul') || !(input && input.length)) {
-        throw "You're doing it wrong.";
+        throw "grfModuleSet: You're doing it wrong.";
       }
 
       var $container = this.addClass('grf-modcontainer'), 
@@ -101,6 +101,14 @@
             return false;
           },
 
+          getRSS: function(url) {
+            this.getYQL('select * from rss where url="'+url+'"');
+          },
+
+          getYQL: function(query) {
+            this.getJSONp('http://query.yahooapis.com/v1/public/yql?q='+encodeURIComponent(query)+'&format=json&callback=?');
+          },
+
           getJSONp: function(url) {
             var that = this;
             $.ajax( {
@@ -108,6 +116,7 @@
               dataType: 'json',
               success: function(data){
                 try {
+                  console.debug(data);
                   that.JSONpCallback(data);
                   that.doneLoading();
                 }
@@ -194,6 +203,24 @@
 
       return this;
     };
+
+    $.extend({
+      grfTimeAgo: function(input){
+        if(!(input instanceof Date)) { input = new Date(input); }
+        var ss = Math.ceil( (new Date()-input)/1000 );
+        if(ss<120){ when = "Just now"; } // less than two minutes
+        else{ if(ss<7200) { when = Math.floor(ss/60)+" minutes ago"; } // less than 2 hours
+        else{ if(ss<86400) { when = Math.floor(ss/3600)+" hours ago"; } // less than 24 hours
+        else{ if(ss<172800) { when = "Yesterday"; } // less than 2 days
+        else{ if(ss<5184000) { when = Math.floor(ss/86400)+" days ago"; } // less than 2 months
+        else{ when = Math.floor(ss/2592000)+" months ago"; } } } } }
+        return when;
+      },
+      grfLinkifyUrls: function(input){
+        return input.toString().replace( /https?:\/\/[^\s]+/g, function(a) { return '<a href="'+a+'">'+a+'</a>'; } );
+      }
+    });
+
   })(jQuery);
 
 ///////////// DOM ready //////////////////////////////////////////////////////////////////////////////////////

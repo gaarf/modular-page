@@ -1,6 +1,6 @@
 html {
-  background: #EEE -moz-linear-gradient( left center, #CCC 0%, #FFF 50%, #CCC 100% );
-  background-image: -webkit-gradient( linear, left top, right top, color-stop(0, #CCC), color-stop(0.5, #FFF), color-stop(1, #CCC) );
+  background: #EEE -moz-linear-gradient( left center, #aaa 0%, #FFF 50%, #aaa 100% );
+  background-image: -webkit-gradient( linear, left top, right top, color-stop(0, #aaa), color-stop(0.5, #FFF), color-stop(1, #aaa) );
 }
 
 body {
@@ -70,10 +70,12 @@ ul.grf-modcontainer {
   background-color:yellow;
 }
 
+/* --- LOCALSTORAGE ------------------------------------------------------------------------------ */
 .grf-modcontainer li.localstorage {
   font-size:77%; text-align:center;
 }
 
+/* --- TWITTER ------------------------------------------------------------------------------ */
 .grf-modcontainer li.twitter ol li {
   margin-bottom:1em;
 }
@@ -90,4 +92,13 @@ ul.grf-modcontainer {
 }
 .grf-modcontainer li.twitter ol .meta a:hover {
   text-decoration:underline;
+}
+
+/* --- FLICKR ------------------------------------------------------------------------------ */
+.grf-modcontainer li.flickr ol li {
+  float:left;
+  padding:0 2px 2px 0;
+}
+.grf-modcontainer li.flickr ol li img {
+  display:block;
 }
