@@ -34,19 +34,35 @@ MODULES = [
       this.$node.find('h2').append(' - @'+this._USERNAME);
     },
     JSONpCallback: function(data) {
-      var html = '<ol>';
+      var html = '<ol>', now = new Date();
       $.each(data,function(i){
-        console.log(i,this);
-        var when = new Date(this.created_at);
+        var when = new Date(this.created_at), ss = Math.floor((now-when)/1000);
+        if(ss<120) { when = "Just now"; }
+        else {
+          if(ss<7200) { when = Math.ceil(ss/60)+" minutes ago"; } // less than 2 hours
+          else {
+            if(ss<86400) { when = Math.ceil(ss/3600)+" hours ago"; } // less than 2 days
+            else {
+              if(ss<172800) { when = "Yesterday"; } // less than 2 days
+              else {
+                when = Math.ceil(ss/86400)+" days ago";
+              }
+            }
+          }
+        }
+        console.log(this);
         html += '<li class="item'+i+'"><div class="text">';
         html += this.text.replace( /https?:\/\/[^\s]+/g, function($0) { return '<a href="'+$0+'">'+$0+'</a>'; } );
-        html += '</div> <div class="meta"><span class="when">'+when+'</span>';
+        html += '</div><div class="meta"><span class="when"><a href="http://twitter.com/'+this.user.screen_name+'/status/'+this.id+'">'+when+'</a></span>';
+        if(this.source) {
+          html += ' <span class="source">via '+this.source+'</span>';
+        }
         if(this.place) {
           var g = this.geo.coordinates;
-          html += ' <span class="geo">From <a href="http://twitter.com/search?q=place%3A'+this.place.id+'">'+this.place.full_name+'</a>';
+          html += ' <span class="geo">from <a href="http://twitter.com/search?q=place%3A'+this.place.id+'">'+this.place.full_name+'</a>';
           html += ' [<a href="http://maps.google.com/maps?q='+g[0]+','+g[1]+'">map</a>]</span>';
         }
-        html += '</div></li>';
+        html += '.</div></li>';
       });
       this.$content.html(html+'</ol>');
 
