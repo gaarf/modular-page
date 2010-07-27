@@ -207,8 +207,9 @@
 
     $.extend({
       grfTimeAgo: function(input){
-        if(!(input instanceof Date)) { input = new Date(input); }
-        var ss = Math.ceil( (new Date()-input)/1000 );
+        var then = (input instanceof Date) ? input : new Date(input),
+            ss = Math.ceil( (new Date()-then)/1000 );
+        if(!ss) { return input.toString(); }
         if(ss<120){ when = "Just now"; } // less than two minutes
         else{ if(ss<7200) { when = Math.floor(ss/60)+" minutes ago"; } // less than 2 hours
         else{ if(ss<86400) { when = Math.floor(ss/3600)+" hours ago"; } // less than 24 hours

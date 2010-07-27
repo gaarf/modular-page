@@ -74,6 +74,7 @@ MODULES = [
     JSONpCallback: function(data) {
       var html = '<ol>';
       $.each(data.query.results.entry.splice(0,this._MAXITEMS),function(i){
+        console.log(this);
         html += '<li class="item'+i+'"><p class="when">' + $.grfTimeAgo(this.published) + '</p>'
               + '<p class="title">' + this.title + '</p>' + this.content.content + '</li>';
       });
