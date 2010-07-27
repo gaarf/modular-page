@@ -101,8 +101,8 @@
             return false;
           },
 
-          getRSS: function(url) {
-            this.getYQL('select * from rss where url="'+url+'"');
+          getFeed: function(url) {
+            this.getYQL('select * from feed where url="'+url+'"');
           },
 
           getYQL: function(query) {
@@ -192,6 +192,7 @@
       setTimeout(function(){
         $.each(_modules,function(){
           this.$node.css(this.$node.position());
+          this.$node.css('width',this.$node.width());
         });
         $.each(_modules,function(){
           this.$node.css('position','absolute');

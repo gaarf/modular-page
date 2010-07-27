@@ -49,7 +49,7 @@ MODULES = [
     _MAXITEMS: 18,
     css: {height:'263px',width:'476px'},
     initAfter: function() {
-      this.getRSS('http://api.flickr.com/services/feeds/photos_faves.gne?id='+this._ID+'&format=rss_200');
+      this.getFeed('http://api.flickr.com/services/feeds/photos_faves.gne?id='+this._ID+'&format=rss_200');
     },
     JSONpCallback: function(data) {
       var html = '<ol>';
@@ -63,10 +63,30 @@ MODULES = [
   },
 
   { 
+    sKey: 'github',
+    title: 'GitHub activity',
+    _USERNAME: 'gaarf',
+    _MAXITEMS: 5,
+    css: {height:'325px',width:'232px'},
+    initAfter: function() {
+      this.getFeed('http://github.com/'+this._USERNAME+'.atom');
+    },
+    JSONpCallback: function(data) {
+      var html = '<ol>';
+      $.each(data.query.results.entry.splice(0,this._MAXITEMS),function(i){
+        console.log(this);
+        html += '<li class="item'+i+'"><p class="title">' + this.title + '</p>';
+        html += this.content.content + '</li>';
+      });
+      this.$content.html(html+'</ol>');
+    }
+  },
+
+  { 
     sKey: 'lorem',
     title: 'Lorem ipsum',
     resizable:true,
-    css: {width:'476px'},
+    css: {width:'232px'},
     initBefore: function() {
       this.$content.text('Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
     },

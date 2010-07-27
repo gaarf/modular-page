@@ -102,3 +102,22 @@ ul.grf-modcontainer {
 .grf-modcontainer li.flickr ol li img {
   display:block;
 }
+
+/* --- GITHUB ------------------------------------------------------------------------------ */
+.grf-modcontainer li.github ol li {
+  margin-bottom:1em;
+}
+
+.grf-modcontainer li.github ol li p.title {
+  font-weight:bold;
+}
+
+.grf-modcontainer li.github ol li div.details {
+  font-size:77%;
+}
+
+.grf-modcontainer li.github ol li .details div.message,
+.grf-modcontainer li.github ol li .details .message blockquote {
+  color:gray;
+  display:inline;
+}
