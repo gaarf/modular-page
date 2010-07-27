@@ -97,10 +97,15 @@ ul.grf-modcontainer {
 /* --- FLICKR ------------------------------------------------------------------------------ */
 .grf-modcontainer li.flickr ol li {
   float:left;
-  padding:0 2px 2px 0;
 }
 .grf-modcontainer li.flickr ol li img {
+  border:1px solid white;
   display:block;
+}
+.grf-modcontainer li.flickr ol li img:hover {
+  rotation: 9deg;
+  -webkit-transform: rotate(9deg);
+  -moz-transform: rotate(9deg);
 }
 
 /* --- GITHUB ------------------------------------------------------------------------------ */

@@ -47,7 +47,7 @@ MODULES = [
     sKey: 'flickr',
     _ID: '94765669@N00',
     _MAXITEMS: 18,
-    css: {height:'263px',width:'476px'},
+    css: {height:'265px',width:'476px'},
     initAfter: function() {
       this.getFeed('http://api.flickr.com/services/feeds/photos_faves.gne?id='+this._ID+'&format=rss_200');
     },
