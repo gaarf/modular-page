@@ -105,19 +105,19 @@ ul.grf-modcontainer {
 
 /* --- GITHUB ------------------------------------------------------------------------------ */
 .grf-modcontainer li.github ol li {
-  margin-bottom:1em;
+  margin-bottom:9px;
+  line-height:1em;
 }
-
-.grf-modcontainer li.github ol li p.title {
-  font-weight:bold;
+.grf-modcontainer li.github ol li .when {
+  font-size:77%;
+  color:gray;
 }
-
 .grf-modcontainer li.github ol li div.details {
   font-size:77%;
 }
-
-.grf-modcontainer li.github ol li .details div.message,
-.grf-modcontainer li.github ol li .details .message blockquote {
+.grf-modcontainer li.github ol li .details div.message {
   color:gray;
-  display:inline;
+}
+.grf-modcontainer li.github ol li blockquote {
+  font-style: italic;
 }

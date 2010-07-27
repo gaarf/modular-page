@@ -54,9 +54,8 @@ MODULES = [
     JSONpCallback: function(data) {
       var html = '<ol>';
       $.each(data.query.results.item.splice(0,this._MAXITEMS),function(i){
-        console.log(this);
-        html += '<li class="item'+i+'"><a href="'+this.link+'" title="'+this.title[0]+'">';
-        html += '<img src="'+this.thumbnail.url+'" height="'+this.thumbnail.height+'" width="'+this.thumbnail.width+'" alt="" /></a></li>';
+        html += '<li class="item'+i+'"><a href="'+this.link+'" title="'+this.title[0]+'"><img src="'+this.thumbnail.url
+              + '" height="'+this.thumbnail.height+'" width="'+this.thumbnail.width+'" alt="" /></a></li>';
       });
       this.$content.html(html+'</ol>');
     }
@@ -67,16 +66,16 @@ MODULES = [
     title: 'GitHub activity',
     _USERNAME: 'gaarf',
     _MAXITEMS: 5,
-    css: {height:'325px',width:'232px'},
+    resizable:true,
+    css: {height:'420px',width:'232px'},
     initAfter: function() {
       this.getFeed('http://github.com/'+this._USERNAME+'.atom');
     },
     JSONpCallback: function(data) {
       var html = '<ol>';
       $.each(data.query.results.entry.splice(0,this._MAXITEMS),function(i){
-        console.log(this);
-        html += '<li class="item'+i+'"><p class="title">' + this.title + '</p>';
-        html += this.content.content + '</li>';
+        html += '<li class="item'+i+'"><p class="when">' + $.grfTimeAgo(this.published) + '</p>'
+              + '<p class="title">' + this.title + '</p>' + this.content.content + '</li>';
       });
       this.$content.html(html+'</ol>');
     }
