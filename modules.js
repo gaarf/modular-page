@@ -27,17 +27,15 @@ MODULES = [
     JSONpCallback: function(data) {
       var html = '<ol>';
       $.each(data,function(i){
-        html += '<li class="item'+i+'"><div class="text">' + $.grfLinkifyUrls(this.text); 
-        html += '</div><div class="meta"><span class="when"><a href="http://twitter.com/'+this.user.screen_name+'/status/'+this.id+'">' + 
-                $.grfTimeAgo(this.created_at)+'</a></span>';
-        if(this.source) {
-          html += ' <span class="source">via '+this.source+'</span>';
-        }
-        console.log(this);
-        if(this.place && this.geo) {
-          var g = this.geo.coordinates;
-          html += ' <span class="geo"><a href="http://maps.google.com/maps?q='+g[0]+','+g[1]+'">from</a>' + 
-                  ' <a href="http://twitter.com/search?q=place%3A'+this.place.id+'">'+this.place.full_name+'</a></span>';
+        html += '<li class="item'+i+'"><div class="text">' + $.grfLinkifyUrls(this.text)
+              + '</div><div class="meta"><span class="when"><a href="http://twitter.com/'+this.user.screen_name+'/status/'+this.id+'">' 
+              + $.grfTimeAgo(this.created_at)+'</a></span>';
+        if(this.source) { html += ' <span class="source">via '+this.source+'</span>'; }
+        if(this.place) {
+          var g = this.geo && this.geo.coordinates;
+          html += ' <span class="geo">'
+                + (g ? '<a href="http://maps.google.com/maps?q='+g[0]+','+g[1]+'">from</a>' : 'from')
+                + ' <a href="http://twitter.com/search?q=place%3A'+this.place.id+'">'+this.place.full_name+'</a></span>';
         }
         html += '.</div></li>';
       });
