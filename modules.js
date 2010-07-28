@@ -2,9 +2,14 @@ MODULES = [
 
   { 
     sKey: 'welcome',
-    title: 'Welcome!',
+    title: 'gaarf.info',
+    css: {width:'788px'},
     initBefore: function() {
-      this.$content.html('This page is <strong><em>pure</em> JavaScript</strong>. Modules can be dragged around, some can be resized. If your browser supports <a href="http://dev.w3.org/html5/webstorage/">Web Storage</a>, module positioning is memorized for your next visit. It works on iPad. <a href="http://github.com/gaarf/modular-page">The source is on github</a>. Enjoy!');
+      var html = '<p>This page is <strong><em>pure</em> JavaScript</strong>. Modules can be dragged around, some can be resized. Enjoy!</p>';
+      if(window.localStorage) {
+          html += '<p class="small">Your browser supports <a href="http://dev.w3.org/html5/webstorage/">Web Storage</a>, so module positioning will be memorized for your next visit. Reload the page to see!</p>'
+      }
+      this.$content.html(html);
     }
   },
 
@@ -13,10 +18,12 @@ MODULES = [
     _USERNAME: 'gaarf',
     css: {height:'600px',width:'300px'},
     resizable: true,
+
     initBefore: function() {
       this.getJSONp('http://twitter.com/status/user_timeline/'+this._USERNAME+'.json?count=10&callback=?');
       this.$node.find('h2').append(' - @'+this._USERNAME);
     },
+
     JSONpCallback: function(data) {
       var html = '<ol>';
       $.each(data,function(i){
@@ -47,7 +54,8 @@ MODULES = [
     sKey: 'flickr',
     _ID: '94765669@N00',
     _MAXITEMS: 18,
-    css: {height:'265px',width:'476px'},
+    css: {height:'268px',width:'476px'},
+
     initAfter: function() {
       this.getFeed('http://api.flickr.com/services/feeds/photos_faves.gne?id='+this._ID+'&format=rss_200');
     },
@@ -64,19 +72,48 @@ MODULES = [
   { 
     sKey: 'github',
     title: 'GitHub activity',
+    className: 'genericfeed',
     _USERNAME: 'gaarf',
     _MAXITEMS: 5,
     resizable:true,
-    css: {height:'420px',width:'232px'},
+    css: {height:'320px',width:'232px'},
+
     initAfter: function() {
       this.getFeed('http://github.com/'+this._USERNAME+'.atom');
     },
+
     JSONpCallback: function(data) {
       var html = '<ol>';
       $.each(data.query.results.entry.splice(0,this._MAXITEMS),function(i){
         console.log(this);
         html += '<li class="item'+i+'"><p class="when">' + $.grfTimeAgo(this.published) + '</p>'
-              + '<p class="title">' + this.title + '</p>' + this.content.content + '</li>';
+              + '<p class="title">' + this.title + '</p>' 
+              + this.content.content + '</li>';
+      });
+      this.$content.html(html+'</ol>');
+    }
+  },
+
+  { 
+    sKey: 'blogposts',
+    title: 'Blog Posts',
+    className: 'genericfeed',
+    _URL: 'http://gaarf.info/feed/',
+    _MAXITEMS: 5,
+    resizable:true,
+    css: {height:'320px',width:'232px'},
+
+    initAfter: function() {
+      this.getFeed(this._URL);
+    },
+
+    JSONpCallback: function(data) {
+      var html = '<ol>';
+      $.each(data.query.results.item.splice(0,this._MAXITEMS),function(i){
+        console.log(this);
+        html += '<li class="item'+i+'"><p class="when">' + $.grfTimeAgo(this.pubDate) + '</p>'
+              + '<p class="title"><a href="' + this.link + '">' + this.title + '</a></p>' 
+              + '<p class="details">' + $.grfShortenString(this.description,100) + '</p></li>';
       });
       this.$content.html(html+'</ol>');
     }
@@ -86,10 +123,11 @@ MODULES = [
     sKey: 'lorem',
     title: 'Lorem ipsum',
     resizable:true,
-    css: {width:'232px'},
+    css: {clear:'both',width:'788px'},
     initBefore: function() {
       this.$content.text('Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
     },
+
     initAfter: function() {
       this.$content.append('<br>Cras purus justo, blandit nec interdum vel, imperdiet eget ante. Donec libero risus, condimentum ut iaculis eu, lacinia et est. Nam hendrerit interdum congue. Phasellus metus eros, sodales quis condimentum facilisis, elementum nec sem. Cras blandit nulla convallis orci euismod tempor laoreet elit mollis. Nullam non sem nec odio sodales aliquam. Phasellus egestas lectus et est tincidunt semper. Nulla facilisi. Fusce pellentesque erat non nunc facilisis sed gravida velit scelerisque. Aenean sed est eros. Ut ut pulvinar massa. Integer ut metus augue, id egestas augue. Phasellus nunc tortor, cursus vitae commodo quis, tempor in erat. Mauris vitae lectus sed lacus lacinia ullamcorper vitae bibendum mauris. Pellentesque ut consectetur lorem. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae...');
       this.doneLoading();
