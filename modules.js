@@ -5,11 +5,16 @@ MODULES = [
     title: 'gaarf.info',
     css: {width:'788px'},
     initBefore: function() {
-      var html = '<p>This page is <strong><em>pure</em> JavaScript</strong>. Modules can be dragged around, some can be resized. Enjoy!</p>';
+      var html = '<h1>Hi, I am @gaarf. I build stuff in browsers.</h1><p>This page was made using @anywhere, @jQuery, and @YQL. No images are used, all gradients are done with CSS.<br> Modules pull live data via JSONP. They can be dragged around, and some can be resized.</p><p>It works on your iPad, thanks to <strong>jqDnR-touch</strong>, a little library I wrote that you can <a href="http://github.com/gaarf/jqDnR-touch">fork on github</a>.</p>';
       if(window.localStorage) {
           html += '<p class="small">Your browser supports <a href="http://dev.w3.org/html5/webstorage/">Web Storage</a>, so module positioning will be memorized for your next visit. Reload the page to see!</p>'
       }
       this.$content.html(html);
+      if(twttr) {
+        twttr.anywhere(function(T) {
+          T('li.welcome').hovercards();
+        });
+      }
     }
   },
 
@@ -42,7 +47,6 @@ MODULES = [
       });
       this.$content.html(html+'</ol>');
       if(twttr) {
-        var that = this;
         twttr.anywhere(function(T) {
           T('li.twitter').hovercards();
         });
