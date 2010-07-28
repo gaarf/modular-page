@@ -17,8 +17,7 @@ em {
   font-size:85%;
 }
 h1 {
-  font-size: 200%;
-  font-weight: bold;
+  font: bold 333%/1.1em 'Lobster', arial, serif;
 }
 a {
   text-decoration:none;
@@ -30,7 +29,6 @@ ul.grf-modcontainer {
   position:relative;
   -moz-user-select: -moz-none;
   -webkit-user-select: none;
-  height:111px;
 }
 .grf-modcontainer li.mod {
   position:relative; 
@@ -54,15 +52,15 @@ ul.grf-modcontainer {
 .grf-modcontainer .mod h2 {
   background-color:orange;
   color:black;
-  padding:.4em 6px;
+  padding:4px 8px;
   white-space:nowrap;
+  letter-spacing: 2px;
 }
 .grf-modcontainer .mod h2 a {
   color:inherit;
 }
 .grf-modcontainer .mod h2 span {
-
-  font-weight: bold;
+  font-weight:bold;
 }
 
 .grf-modcontainer .mod .content {
@@ -77,9 +75,9 @@ ul.grf-modcontainer {
   -moz-border-radius:0 0 0 6px;
   -webkit-border-radius:0 0 0 6px;
   
-  box-shadow: 3px 3px 5px black;
-  -moz-box-shadow: 3px 3px 5px black;
-  -webkit-box-shadow: 3px 3px 5px black;
+  box-shadow: 3px 3px 5px #333;
+  -moz-box-shadow: 3px 3px 5px #333;
+  -webkit-box-shadow: 3px 3px 5px #333;
 }
 
 /* --- WELCOME MODULE ------------------------------------------------------------------------------ */
@@ -87,11 +85,18 @@ ul.grf-modcontainer {
   margin:6px 0;
 }
 
+/* --- LOREM IPSUM ------------------------------------------------------------------------------ */
+.grf-modcontainer li.lorem p {
+  margin-bottom:.6em;
+  text-align: justify; 
+}
 
 /* --- LOCALSTORAGE ------------------------------------------------------------------------------ */
 .grf-modcontainer li.localstorage {
-  font-size:77%; text-align:center; 
+  font-size:77%; 
+  text-align:center; 
 }
+
 /* --- TWITTER ------------------------------------------------------------------------------ */
 .grf-modcontainer li.twitter ol li {
   padding:10px 0;
@@ -151,3 +156,4 @@ ul.grf-modcontainer {
 .grf-modcontainer li.genericfeed ol li blockquote {
   font-style: italic;
 }
+

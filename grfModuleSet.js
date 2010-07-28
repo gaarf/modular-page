@@ -96,8 +96,8 @@
                 console.error(e,that);
               }
             },
-            error: function() {
-              alert('getJSONp failed');
+            error: function(e) {
+              console.error('getJSONp failed',e);
             }
           } );
         },

@@ -2,26 +2,21 @@ MODULES = [
 
   { 
     sKey: 'welcome',
-    title: 'gaarf.info',
+    title: 'Welcome!',
     css: {width:'788px'},
     initBefore: function() {
-      var html = '<h1>Hi, I am @gaarf. I build stuff in browsers.</h1><p>This page was made using @anywhere, @jQuery, and @YQL. No images are used, all gradients are done with CSS.<br> Modules pull live data via JSONP. They can be dragged around, and some can be resized.</p><p>It works on your iPad, thanks to <strong>jqDnR-touch</strong>, a little library I wrote that you can <a href="http://github.com/gaarf/jqDnR-touch">fork on github</a>.</p>';
+      var html = '<p>This page was made using @anywhere, @jQuery, and @YQL. No images are used, all gradients are done with CSS.<br> Modules pull live data via JSONP. They can be dragged around, and some can be resized.</p><p>It works on your iPad, thanks to <strong>jqDnR-touch</strong>, a little library I wrote that you can <a href="http://github.com/gaarf/jqDnR-touch">fork on github</a>.</p>';
       if(window.localStorage) {
           html += '<p class="small">Your browser supports <a href="http://dev.w3.org/html5/webstorage/">Web Storage</a>, so module positioning will be memorized for your next visit. Reload the page to see!</p>'
       }
       this.$content.html(html);
-      if(twttr) {
-        twttr.anywhere(function(T) {
-          T('li.welcome').hovercards();
-        });
-      }
     }
   },
 
   { 
     sKey: 'twitter',
     _USERNAME: 'gaarf',
-    css: {height:'600px',width:'300px'},
+    css: {height:'630px',width:'300px'},
     resizable: true,
 
     initBefore: function() {
@@ -46,11 +41,6 @@ MODULES = [
         html += '.</div></li>';
       });
       this.$content.html(html+'</ol>');
-      if(twttr) {
-        twttr.anywhere(function(T) {
-          T('li.twitter').hovercards();
-        });
-      }
     }
   },
 
@@ -80,7 +70,7 @@ MODULES = [
     _USERNAME: 'gaarf',
     _MAXITEMS: 5,
     resizable:true,
-    css: {height:'320px',width:'232px'},
+    css: {height:'350px',width:'232px'},
 
     initAfter: function() {
       this.getFeed('http://github.com/'+this._USERNAME+'.atom');
@@ -89,7 +79,7 @@ MODULES = [
     JSONpCallback: function(data) {
       var html = '<ol>';
       $.each(data.query.results.entry.splice(0,this._MAXITEMS),function(i){
-        console.log(this);
+        // console.log(this);
         html += '<li class="item'+i+'"><p class="when">' + $.grfTimeAgo(this.published) + '</p>'
               + '<p class="title">' + this.title + '</p>' 
               + this.content.content + '</li>';
@@ -105,7 +95,7 @@ MODULES = [
     _URL: 'http://gaarf.info/feed/',
     _MAXITEMS: 5,
     resizable:true,
-    css: {height:'320px',width:'232px'},
+    css: {height:'350px',width:'232px'},
 
     initAfter: function() {
       this.getFeed(this._URL);
@@ -114,7 +104,7 @@ MODULES = [
     JSONpCallback: function(data) {
       var html = '<ol>';
       $.each(data.query.results.item.splice(0,this._MAXITEMS),function(i){
-        console.log(this);
+        // console.log(this);
         html += '<li class="item'+i+'"><p class="when">' + $.grfTimeAgo(this.pubDate) + '</p>'
               + '<p class="title"><a href="' + this.link + '">' + this.title + '</a></p>' 
               + '<p class="details">' + $.grfShortenString(this.description,100) + '</p></li>';
@@ -125,15 +115,15 @@ MODULES = [
 
   { 
     sKey: 'lorem',
-    title: 'Lorem ipsum',
+    title: 'Justified text!',
     resizable:true,
     css: {clear:'both',width:'788px'},
     initBefore: function() {
-      this.$content.text('Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
+      this.$content.html('<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>');
     },
 
     initAfter: function() {
-      this.$content.append('<br>Cras purus justo, blandit nec interdum vel, imperdiet eget ante. Donec libero risus, condimentum ut iaculis eu, lacinia et est. Nam hendrerit interdum congue. Phasellus metus eros, sodales quis condimentum facilisis, elementum nec sem. Cras blandit nulla convallis orci euismod tempor laoreet elit mollis. Nullam non sem nec odio sodales aliquam. Phasellus egestas lectus et est tincidunt semper. Nulla facilisi. Fusce pellentesque erat non nunc facilisis sed gravida velit scelerisque. Aenean sed est eros. Ut ut pulvinar massa. Integer ut metus augue, id egestas augue. Phasellus nunc tortor, cursus vitae commodo quis, tempor in erat. Mauris vitae lectus sed lacus lacinia ullamcorper vitae bibendum mauris. Pellentesque ut consectetur lorem. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae...');
+      this.$content.append('<p>Cras purus justo, blandit nec interdum vel, imperdiet eget ante. Donec libero risus, condimentum ut iaculis eu, lacinia et est. Nam hendrerit interdum congue. Phasellus metus eros, sodales quis condimentum facilisis, elementum nec sem. Cras blandit nulla convallis orci euismod tempor laoreet elit mollis. Nullam non sem nec odio sodales aliquam. Phasellus egestas lectus et est tincidunt semper.</p><p>Nulla facilisi. Fusce pellentesque erat non nunc facilisis sed gravida velit scelerisque. Aenean sed est eros. Ut ut pulvinar massa. Integer ut metus augue, id egestas augue. Phasellus nunc tortor, cursus vitae commodo quis, tempor in erat. Mauris vitae lectus sed lacus lacinia ullamcorper vitae bibendum mauris. Pellentesque ut consectetur lorem. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae...</p>');
       this.doneLoading();
     }
   }

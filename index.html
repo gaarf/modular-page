@@ -4,9 +4,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=8">
   <meta charset="utf-8" />
 
-  <title>Gaarf's Modular Homepage</title>
+  <!-- <title>Gaarf's Modular Homepage</title> -->
 
   <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.1/build/reset-fonts/reset-fonts.css" />
+  <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Lobster" />
+
   <link rel="stylesheet" type="text/css" href="style.css" />
 
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
@@ -17,7 +19,6 @@
   <script type="text/javascript" src="modules.js"></script> <!-- defines MODULES -->
 
   <script>
-
   jQuery(document).ready(function($){
 
     if (!window.console) {
@@ -27,14 +28,26 @@
       for (var i = 0; i < names.length; ++i) { window.console[names[i]] = function() {}; }
     }
 
-    $('body').append( $('<ul />').grfModuleSet(MODULES, 1) );
+    $('#modules').grfModuleSet(MODULES, 1);
+
+    if(twttr) {
+      twttr.anywhere(function(T) {
+        T('body').hovercards();
+      });
+    }
 
   });
   </script>
 </head>
 <body>
+  
+  <h1>Hi, I am @gaarf. I build stuff in browsers.</h1>
+
   <noscript>
     Javascript is required!
   </noscript>
+
+  <ul id="modules" />
+  
 </body>
 </html>
