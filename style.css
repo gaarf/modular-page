@@ -29,6 +29,7 @@ ul.grf-modcontainer {
   position:relative;
   -moz-user-select: -moz-none;
   -webkit-user-select: none;
+  margin-bottom:30px;
 }
 .grf-modcontainer li.mod {
   position:relative; 
@@ -42,7 +43,7 @@ ul.grf-modcontainer {
   position:absolute;
   bottom:0; right:0;
   border: 5px solid; 
-  border-color:transparent #333 #333 transparent;
+  border-color:transparent orange orange transparent;
 }
 
 .grf-modcontainer li.loading {
@@ -50,8 +51,12 @@ ul.grf-modcontainer {
 }
 
 .grf-modcontainer .mod h2 {
-  background-color:orange;
-  color:black;
+  background-color:black;
+  background: #000 -moz-linear-gradient( left center, #000 0%, #684100 100% );
+  background-image: -webkit-gradient( linear, left top, right top, color-stop(0, #000), color-stop(1, #684100) );
+
+
+  color:orange;
   padding:4px 8px;
   white-space:nowrap;
   letter-spacing: 2px;

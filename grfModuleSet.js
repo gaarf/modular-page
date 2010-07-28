@@ -32,6 +32,10 @@
         doneLoading: function() {
           this.$node.removeClass('loading');
           this.savePosition();
+          var newHeight = Math.ceil(this.$node.position().top + this.$node.height());
+          if(newHeight > $container.height()) {
+            $container.css('height',newHeight);
+          }
           console.timeEnd(this.sKey);
         },
 
