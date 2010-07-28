@@ -52,14 +52,13 @@ ul.grf-modcontainer {
 
 .grf-modcontainer .mod h2 {
   background-color:black;
-  background: #000 -moz-linear-gradient( left center, #000 0%, #684100 100% );
-  background-image: -webkit-gradient( linear, left top, right top, color-stop(0, #000), color-stop(1, #684100) );
-
+  background: #000 -moz-linear-gradient( left center, #000 66%, orange 100% );
+  background-image: -webkit-gradient( linear, left top, right top, color-stop(.66, #000), color-stop(1, orange) );
 
   color:orange;
   padding:4px 8px;
   white-space:nowrap;
-  letter-spacing: 2px;
+/*  letter-spacing: 2px;*/
 }
 .grf-modcontainer .mod h2 a {
   color:inherit;

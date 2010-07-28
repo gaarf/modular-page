@@ -33,7 +33,8 @@ MODULES = [
         if(this.source) {
           html += ' <span class="source">via '+this.source+'</span>';
         }
-        if(this.place) {
+        console.log(this);
+        if(this.place && this.geo) {
           var g = this.geo.coordinates;
           html += ' <span class="geo"><a href="http://maps.google.com/maps?q='+g[0]+','+g[1]+'">from</a>' + 
                   ' <a href="http://twitter.com/search?q=place%3A'+this.place.id+'">'+this.place.full_name+'</a></span>';
