@@ -77,8 +77,8 @@
           return false;
         },
 
-        getFeed: function(url) {
-          this.getYQL('select * from feed where url="'+url+'"');
+        getFeed: function(url,limit) {
+          this.getYQL('select * from feed'+(limit?'('+limit+')':'')+' where url="'+url+'"');
         },
 
         getYQL: function(query) {
@@ -92,7 +92,7 @@
             dataType: 'json',
             success: function(data){
               try {
-                console.debug(that.sKey,data);
+                // console.debug(that.sKey,data);
                 that.JSONpCallback(data);
                 that.doneLoading();
               }

@@ -14,13 +14,14 @@ MODULES = [
   },
 
   { 
-    sKey: 'twitter',
+    sKey: 'twttr',
     _USERNAME: 'gaarf',
-    css: {height:'630px',width:'300px'},
+    _MAXITEMS: 10,
+    css: {height:'630px',width:'290px'},
     resizable: true,
 
     initBefore: function() {
-      this.getJSONp('http://twitter.com/status/user_timeline/'+this._USERNAME+'.json?count=10&callback=?');
+      this.getJSONp('http://twitter.com/status/user_timeline/'+this._USERNAME+'.json?count='+this._MAXITEMS+'&callback=?');
       this.$node.find('h2').append(' - @'+this._USERNAME);
     },
 
@@ -44,10 +45,42 @@ MODULES = [
   },
 
   { 
+    sKey: 'twimages',
+    className: 'images',
+    title: 'Tweeted Images',
+    _USERNAME: 'gaarf',
+    _MAXITEMS: 9,
+    resizable:true,
+    css: {height:'261px',width:'237px'},
+
+    initAfter: function() {
+      var urls = [
+        'http://twitpic.com/photos/'+this._USERNAME+'/feed.rss',
+        'http://yfrog.com/rss.php?username='+this._USERNAME
+      ];
+      this.getYQL("select title,link,description,pubDate from feed("+this._MAXITEMS+")" 
+        + " where url in ('"+urls.join("','")+"') | sort(field='pubDate', descending='true')");
+    },
+    JSONpCallback: function(data) {
+      console.debug(data);
+      var html = '<ol>', thumbnail = this._THUMBNAIL;
+      $.each(data.query.results.item,function(i){
+        var url = this.description.match(/img src="([^"]+)"/);
+        if(url) {
+          html += '<li class="item'+i+'"><a href="'+this.link+'" title="'+this.title+'"><img src="'+url[1]
+                + '" height="75" width="75" alt="" /></a></li>';
+        }
+      });
+      this.$content.html(html+'</ol>');
+    }
+  },
+
+  { 
     sKey: 'flickr',
+    className: 'images',
     _ID: '94765669@N00',
-    _MAXITEMS: 18,
-    css: {height:'268px',width:'476px'},
+    _MAXITEMS: 9,
+    css: {height:'261px',width:'237px'},
 
     initAfter: function() {
       this.getFeed('http://api.flickr.com/services/feeds/photos_faves.gne?id='+this._ID+'&format=rss_200');
@@ -69,15 +102,15 @@ MODULES = [
     _USERNAME: 'gaarf',
     _MAXITEMS: 5,
     resizable:true,
-    css: {height:'350px',width:'232px'},
+    css: {height:'357px',width:'237px'},
 
     initAfter: function() {
-      this.getFeed('http://github.com/'+this._USERNAME+'.atom');
+      this.getFeed('http://github.com/'+this._USERNAME+'.atom',this._MAXITEMS);
     },
 
     JSONpCallback: function(data) {
       var html = '<ol>';
-      $.each(data.query.results.entry.splice(0,this._MAXITEMS),function(i){
+      $.each(data.query.results.entry,function(i){
         // console.log(this);
         html += '<li class="item'+i+'"><p class="when">' + $.grfTimeAgo(this.published) + '</p>'
               + '<p class="title">' + this.title + '</p>' 
@@ -94,15 +127,15 @@ MODULES = [
     _URL: 'http://gaarf.info/feed/',
     _MAXITEMS: 5,
     resizable:true,
-    css: {height:'350px',width:'232px'},
+    css: {height:'357px',width:'237px'},
 
     initAfter: function() {
-      this.getFeed(this._URL);
+      this.getFeed(this._URL,this._MAXITEMS);
     },
 
     JSONpCallback: function(data) {
       var html = '<ol>';
-      $.each(data.query.results.item.splice(0,this._MAXITEMS),function(i){
+      $.each(data.query.results.item,function(i){
         // console.log(this);
         html += '<li class="item'+i+'"><p class="when">' + $.grfTimeAgo(this.pubDate) + '</p>'
               + '<p class="title"><a href="' + this.link + '">' + this.title + '</a></p>' 

@@ -131,18 +131,21 @@ ul.grf-modcontainer {
   text-decoration:underline;
 }
 
-/* --- FLICKR ------------------------------------------------------------------------------ */
-.grf-modcontainer li.flickr ol li {
+/* --- IMAGES INCLUDING FLICKR ------------------------------------------------------------------------------ */
+.grf-modcontainer li.images div.content {
+  padding:3px;
+}
+.grf-modcontainer li.images ol li {
   float:left;
 }
-.grf-modcontainer li.flickr ol li img {
+.grf-modcontainer li.images ol li img {
   border:1px solid white;
   display:block;
 }
-.grf-modcontainer li.flickr ol li img:hover {
-  rotation: 9deg;
-  -webkit-transform: rotate(9deg);
-  -moz-transform: rotate(9deg);
+.grf-modcontainer li.images ol li img:hover {
+  rotation: 6deg;
+  -webkit-transform: rotate(6deg);
+  -moz-transform: rotate(6deg);
 }
 
 /* --- GENERIC FEED STYLE ------------------------------------------------------------------------------ */
