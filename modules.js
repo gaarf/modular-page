@@ -14,7 +14,8 @@ MODULES = [
   },
 
   { 
-    sKey: 'twttr',
+    sKey: 'twitter',
+    title: 'twttr',
     _USERNAME: 'gaarf',
     _MAXITEMS: 10,
     css: {height:'630px',width:'290px'},
@@ -50,24 +51,26 @@ MODULES = [
     title: 'Tweeted Images',
     _USERNAME: 'gaarf',
     _MAXITEMS: 9,
-    resizable:true,
     css: {height:'261px',width:'237px'},
 
     initAfter: function() {
       var urls = [
-        'http://twitpic.com/photos/'+this._USERNAME+'/feed.rss',
-        'http://yfrog.com/rss.php?username='+this._USERNAME
+        'http://yfrog.com/rss.php?username='+this._USERNAME,
+        'http://twitpic.com/photos/'+this._USERNAME+'/feed.rss'
       ];
-      this.getYQL("select title,link,description,pubDate from feed("+this._MAXITEMS+")" 
-        + " where url in ('"+urls.join("','")+"') | sort(field='pubDate', descending='true')");
+      this.getYQL("select title,link,pubDate from rss where url in ('"+urls.join("','")+"') | sort(field='pubDate', descending='true')");
     },
     JSONpCallback: function(data) {
       console.debug(data);
-      var html = '<ol>', thumbnail = this._THUMBNAIL;
-      $.each(data.query.results.item,function(i){
-        var url = this.description.match(/img src="([^"]+)"/);
+      var html = '<ol>';
+      $.each(data.query.results.item.splice(0,this._MAXITEMS),function(i){
+        var url, m = this.link.match(/(yfrog|twitpic)\.com\/(.+)$/);
+        switch(m[1]) {
+          case 'yfrog': url = this.link + '.th.jpg'; break;
+          case 'twitpic': url = 'http://twitpic.com/show/mini/'+m[2]; break;
+        }
         if(url) {
-          html += '<li class="item'+i+'"><a href="'+this.link+'" title="'+this.title+'"><img src="'+url[1]
+          html += '<li class="item'+i+'"><a href="'+this.link+'" title="'+this.title+'"><img src="'+url
                 + '" height="75" width="75" alt="" /></a></li>';
         }
       });

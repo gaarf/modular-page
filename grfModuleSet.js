@@ -82,6 +82,7 @@
         },
 
         getYQL: function(query) {
+          console.log(query);
           this.getJSONp('http://query.yahooapis.com/v1/public/yql?q='+encodeURIComponent(query)+'&format=json&callback=?');
         },
 
