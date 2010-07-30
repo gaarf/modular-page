@@ -124,12 +124,11 @@
           if(this.sKey=='localstorage') { hasClearer = true; }
         });
         if(!hasClearer) {
-          var w = 100, b = $('body').width(); // for positioning to the right of viewport without using right: property
+          var w = 100, b = $('body').width()+5; // for positioning to the right of viewport without using right: property
           input.push({
             sKey: 'localstorage',
             title: 'Web Storage',
-            // css: {width:w+'px',top:0,left:(b-w-10+(($(document).width()-b)/2)),position:'absolute'},
-            css: {width:w+'px',top:10,left:b-w,position:'absolute'},
+            css: {width:w+'px',top:-15,left:b-w,position:'absolute'},
             html: '<input type="button" value="clear &amp; reload" />',
             initBefore: function() {
               this.$node.addClass('prepositioned')
