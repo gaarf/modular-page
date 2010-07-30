@@ -108,7 +108,7 @@ MODULES = [
     title: 'GitHub activity',
     className: 'genericfeed',
     _USERNAME: 'gaarf',
-    _MAXITEMS: 5,
+    _MAXITEMS: 6,
     resizable:true,
     css: {height:'357px',width:'237px'},
 
@@ -117,11 +117,10 @@ MODULES = [
     },
 
     JSONpCallback: function(data) {
-      var html = '<ol>';
+      var html = '<ol>', tprefix = this._USERNAME+' pushed to ';
       $.each(data.query.results.entry,function(i){
-        // console.log(this);
         html += '<li class="item'+i+'"><p class="when">' + $.grfTimeAgo(this.published) + '</p>'
-              + '<p class="title">' + this.title + '</p>' 
+              + '<p class="title">' + this.title.replace(tprefix,'') + '</p>' 
               + this.content.content + '</li>';
       });
       this.$content.html(html+'</ol>');
