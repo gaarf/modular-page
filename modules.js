@@ -5,9 +5,9 @@ MODULES = [
     title: 'Welcome!',
     css: {width:'788px'},
     initBefore: function() {
-      var html = '<p>This page was made using @anywhere, @jQuery, and @YQL. No images are used, all gradients are done with CSS.<br> Modules pull live data via JSONP. They can be dragged around, and some can be resized.</p><p>It works on your iPad, thanks to <strong>jqDnR-touch</strong>, a little library I wrote that you can <a href="http://github.com/gaarf/jqDnR-touch">fork on github</a>.</p>';
+      var html = '<p>This page is pure Javascript, built using @jQuery and @anywhere. All interface elements are done with lovingly hand-crafted CSS. Data is pulled by your browser, thanks to @YQL\'s JSONP support. Modules can be dragged around, and some can be resized.</p><p>It works on iPad, thanks to <strong>jqDnR-touch</strong>, a little library that you can <a href="http://github.com/gaarf/jqDnR-touch">fork on github</a>.</p>';
       if(window.localStorage) {
-          html += '<p class="small">Your browser supports <a href="http://dev.w3.org/html5/webstorage/">Web Storage</a>, so module positioning will be memorized for your next visit. Reload the page to see!</p>'
+          html += '<p class="small">Your browser supports <a href="http://dev.w3.org/html5/webstorage/">Web Storage</a>, so module positioning will be memorized for your next visit. Drag some modules &amp; reload the page to see!</p>'
       }
       this.$content.html(html);
     }
@@ -38,6 +38,11 @@ MODULES = [
           html += ' <span class="geo">'
                 + (g ? '<a href="http://maps.google.com/maps?q='+g[0]+','+g[1]+'">from</a>' : 'from')
                 + ' <a href="http://twitter.com/search?q=place%3A'+this.place.id+'">'+this.place.full_name+'</a></span>';
+        }
+        if(this.in_reply_to_user_id){
+          html += ' <span class="convo">'
+                + '<a href="http://twitter.com/'+this.in_reply_to_screen_name+'/statuses/'+this.in_reply_to_status_id+'">'
+                + 'in reply to '+this.in_reply_to_screen_name+'</a></span>';
         }
         html += '.</div></li>';
       });

@@ -38,6 +38,9 @@ ul.grf-modcontainer {
   background-color:white;
   margin:10px 10px 0 0;
   float:left;
+  border-radius:0 0 0 6px;
+  -moz-border-radius:0 0 0 6px;
+  -webkit-border-radius:0 0 0 6px;
 }
 .grf-modcontainer li.mod div.resizer {
   position:absolute;
@@ -74,11 +77,7 @@ ul.grf-modcontainer {
 }
 
 .grf-modcontainer li.prepositioned,
-.grf-modcontainer li.positioned {
-  border-radius:0 0 0 6px;
-  -moz-border-radius:0 0 0 6px;
-  -webkit-border-radius:0 0 0 6px;
-  
+.grf-modcontainer li.positioned {  
   box-shadow: 3px 3px 5px #333;
   -moz-box-shadow: 3px 3px 5px #333;
   -webkit-box-shadow: 3px 3px 5px #333;
@@ -108,7 +107,7 @@ ul.grf-modcontainer {
 }
 .grf-modcontainer li.twitter ol li.item0 {  border-top:0px none; padding-top:5px; }
 
-.grf-modcontainer li.twitter ol li .text { font-size: 77%; }
+.grf-modcontainer li.twitter ol li .text { font-size: 77%; line-height:1.1em; }
 .grf-modcontainer li.twitter ol li.item0 .text { font-size: 250%; }
 .grf-modcontainer li.twitter ol li.item1 .text { font-size: 140%; }
 .grf-modcontainer li.twitter ol li.item2 .text { font-size: 130%; }
@@ -121,7 +120,7 @@ ul.grf-modcontainer {
 
 .grf-modcontainer li.twitter ol .meta {
   font-size:77%; color:gray;
-  line-height:1em;
+  margin-top:.5em; line-height:1em;
 }
 .grf-modcontainer li.twitter ol .meta a {
   color:gray;
