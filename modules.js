@@ -39,7 +39,7 @@ MODULES = [
                 + (g ? '<a href="http://maps.google.com/maps?q='+g[0]+','+g[1]+'">from</a>' : 'from')
                 + ' <a href="http://twitter.com/search?q=place%3A'+this.place.id+'">'+this.place.full_name+'</a></span>';
         }
-        if(this.in_reply_to_user_id){
+        if(this.in_reply_to_status_id){
           html += ' <span class="convo">'
                 + '<a href="http://twitter.com/'+this.in_reply_to_screen_name+'/statuses/'+this.in_reply_to_status_id+'">'
                 + 'in reply to '+this.in_reply_to_screen_name+'</a></span>';
