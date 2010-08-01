@@ -18,7 +18,7 @@ var MODULES = [
     title: 'twttr',
     _USERNAME: 'gaarf',
     _MAXITEMS: 10,
-    css: {height:'630px',width:'290px'},
+    css: {height:'710px',width:'290px'},
     resizable: true,
 
     initBefore: function() {
@@ -110,7 +110,7 @@ var MODULES = [
     _USERNAME: 'gaarf',
     _MAXITEMS: 6,
     resizable:true,
-    css: {height:'357px',width:'237px'},
+    css: {height:'437px',width:'237px'},
 
     initAfter: function() {
       this.getFeed('http://github.com/'+this._USERNAME+'.atom',this._MAXITEMS);
@@ -132,9 +132,9 @@ var MODULES = [
     title: 'Blog Posts',
     className: 'genericfeed',
     _URL: 'http://gaarf.info/feed/',
-    _MAXITEMS: 5,
+    _MAXITEMS: 6,
     resizable:true,
-    css: {height:'357px',width:'237px'},
+    css: {height:'437px',width:'237px'},
 
     initAfter: function() {
       this.getFeed(this._URL,this._MAXITEMS);

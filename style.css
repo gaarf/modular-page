@@ -22,7 +22,8 @@ em {
   font-size:85%;
 }
 h1 {
-  font: bold 333%/1.1em 'Lobster', arial, serif;
+  text-align:center;
+  font: bold 345%/2em 'Lobster', arial, serif;
 }
 a {
   text-decoration:none;
