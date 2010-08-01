@@ -2,10 +2,12 @@ html {
   background: #EEE -moz-linear-gradient( left center, #666 0%, #fff 50%, #666 100% );
   background-image: -webkit-gradient( linear, left top, right top, color-stop(0, #666), color-stop(0.5, #fff), color-stop(1, #666) );
 }
-
 body {
   width:800px;
   margin:10px auto;
+}
+.adsense {
+  text-align:center;
 }
 strong {
   font-weight:bold;
@@ -36,7 +38,7 @@ ul.grf-modcontainer {
   overflow:hidden;
   border: 1px solid black; 
   background-color:white;
-  margin:10px 10px 0 0;
+  margin:5px;
   float:left;
   border-radius:0 0 0 6px;
   -moz-border-radius:0 0 0 6px;

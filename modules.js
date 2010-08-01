@@ -150,21 +150,21 @@ var MODULES = [
       });
       this.$content.html(html+'</ol>');
     }
-  },
-
-  { 
-    sKey: 'lorem',
-    title: 'Justified text!',
-    resizable:true,
-    css: {clear:'both',width:'788px'},
-    initBefore: function() {
-      this.$content.html('<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>');
-    },
-
-    initAfter: function() {
-      this.$content.append('<p>Cras purus justo, blandit nec interdum vel, imperdiet eget ante. Donec libero risus, condimentum ut iaculis eu, lacinia et est. Nam hendrerit interdum congue. Phasellus metus eros, sodales quis condimentum facilisis, elementum nec sem. Cras blandit nulla convallis orci euismod tempor laoreet elit mollis. Nullam non sem nec odio sodales aliquam. Phasellus egestas lectus et est tincidunt semper.</p><p>Nulla facilisi. Fusce pellentesque erat non nunc facilisis sed gravida velit scelerisque. Aenean sed est eros. Ut ut pulvinar massa. Integer ut metus augue, id egestas augue. Phasellus nunc tortor, cursus vitae commodo quis, tempor in erat. Mauris vitae lectus sed lacus lacinia ullamcorper vitae bibendum mauris. Pellentesque ut consectetur lorem. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae...</p>');
-      this.doneLoading();
-    }
   }
+
+  // { 
+  //   sKey: 'lorem',
+  //   title: 'Justified text!',
+  //   resizable:true,
+  //   css: {clear:'both',width:'788px'},
+  //   initBefore: function() {
+  //     this.$content.html('<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>');
+  //   },
+  // 
+  //   initAfter: function() {
+  //     this.$content.append('<p>Cras purus justo, blandit nec interdum vel, imperdiet eget ante. Donec libero risus, condimentum ut iaculis eu, lacinia et est. Nam hendrerit interdum congue. Phasellus metus eros, sodales quis condimentum facilisis, elementum nec sem. Cras blandit nulla convallis orci euismod tempor laoreet elit mollis. Nullam non sem nec odio sodales aliquam. Phasellus egestas lectus et est tincidunt semper.</p><p>Nulla facilisi. Fusce pellentesque erat non nunc facilisis sed gravida velit scelerisque. Aenean sed est eros. Ut ut pulvinar massa. Integer ut metus augue, id egestas augue. Phasellus nunc tortor, cursus vitae commodo quis, tempor in erat. Mauris vitae lectus sed lacus lacinia ullamcorper vitae bibendum mauris. Pellentesque ut consectetur lorem. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae...</p>');
+  //     this.doneLoading();
+  //   }
+  // }
 
 ];
