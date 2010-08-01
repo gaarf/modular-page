@@ -8,7 +8,7 @@ class LineCommands
   def compress(line, path, mode=nil)
     puts " - COMPRESS #{path}"
     mode ||= extract_suffix(path)
-    compressor = (mode == :css) ? YUI::CssCompressor.new : YUI::JavaScriptCompressor.new
+    compressor = (mode == :css) ? YUI::CssCompressor.new : YUI::JavaScriptCompressor.new(:munge => true)
     file = File.new(path)
     compressor.compress(file.read)
   end
