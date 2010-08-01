@@ -33,7 +33,7 @@ var MODULES = [
         if(this.truncated && this.retweeted_status) {
           text = text.match(/^RT[^:]+:\s/i)[0] + this.retweeted_status.text;
         }
-        html += '<li class="item'+i+'"><div class="text">' + $.grfLinkifyUrls(text)
+        html += '<li class="item item'+i+'"><div class="text">' + $.grfLinkifyUrls(text)
               + '</div><div class="meta"><span class="when"><a href="http://twitter.com/'+u+'/status/'+this.id+'">' 
               + $.grfTimeAgo(this.created_at)+'</a></span>';
         if(this.source) { html += ' <span class="source">via '+this.source+'</span>'; }
@@ -78,7 +78,7 @@ var MODULES = [
           case 'twitpic': url = 'http://twitpic.com/show/mini/'+m[2]; break;
         }
         if(url) {
-          html += '<li class="item'+i+'"><a href="'+this.link+'" title="'+this.title+'"><img src="'+url
+          html += '<li class="item item'+i+'"><a href="'+this.link+'" title="'+this.title+'"><img src="'+url
                 + '" height="75" width="75" alt="" /></a></li>';
         }
       });
@@ -99,7 +99,7 @@ var MODULES = [
     JSONpCallback: function(data) {
       var html = '';
       $.each(data.query.results.item.splice(0,this._MAXITEMS),function(i){
-        html += '<li class="item'+i+'"><a href="'+this.link+'" title="'+this.title[0]+'"><img src="'+this.thumbnail.url
+        html += '<li class="item item'+i+'"><a href="'+this.link+'" title="'+this.title[0]+'"><img src="'+this.thumbnail.url
               + '" height="'+this.thumbnail.height+'" width="'+this.thumbnail.width+'" alt="" /></a></li>';
       });
       this.$content.html('<ol>'+html+'</ol>');
@@ -122,7 +122,7 @@ var MODULES = [
     JSONpCallback: function(data) {
       var html = '', tprefix = this._USERNAME+' pushed to ';
       $.each(data.query.results.entry,function(i){
-        html += '<li class="item'+i+'"><p class="when">' + $.grfTimeAgo(this.published) + '</p>'
+        html += '<li class="item item'+i+'"><p class="when">' + $.grfTimeAgo(this.published) + '</p>'
               + '<p class="title">' + this.title.replace(tprefix,'') + '</p>' 
               + this.content.content + '</li>';
       });
@@ -146,7 +146,7 @@ var MODULES = [
     JSONpCallback: function(data) {
       var html = '';
       $.each(data.query.results.item,function(i){
-        html += '<li class="item'+i+'"><p class="when">' + $.grfTimeAgo(this.pubDate) + '</p>'
+        html += '<li class="item item'+i+'"><p class="when">' + $.grfTimeAgo(this.pubDate) + '</p>'
               + '<p class="title"><a href="' + this.link + '">' + this.title + '</a></p>' 
               + '<p class="details">' + $.grfShortenString(this.description,100) + '</p></li>';
       });

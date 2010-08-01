@@ -155,9 +155,15 @@ ul.grf-modcontainer {
 }
 
 /* --- GENERIC FEED STYLE ------------------------------------------------------------------------------ */
-.grf-modcontainer li.genericfeed ol li {
+.grf-modcontainer li.genericfeed ol li.item {
   margin-bottom:9px;
+  padding-top:9px;
   line-height:1em;
+  border-top:1px dotted #CCC;
+}
+.grf-modcontainer li.genericfeed ol li.item0 {
+  padding:0;
+  border:0px none;
 }
 .grf-modcontainer li.genericfeed ol li .when {
   font-size:77%;
