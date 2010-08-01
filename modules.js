@@ -22,15 +22,19 @@ var MODULES = [
     resizable: true,
 
     initBefore: function() {
-      this.getJSONp('http://twitter.com/status/user_timeline/'+this._USERNAME+'.json?count='+this._MAXITEMS+'&callback=?');
+      this.getJSONp('http://api.twitter.com/1/statuses/user_timeline.json?screen_name='+this._USERNAME+'&count='+this._MAXITEMS+'&trim_user=1&include_rts=1&callback=?');
       this.$node.find('h2').append(' - @'+this._USERNAME);
     },
 
     JSONpCallback: function(data) {
-      var html = '<ol>';
+      var html = '', u = this._USERNAME;
       $.each(data,function(i){
-        html += '<li class="item'+i+'"><div class="text">' + $.grfLinkifyUrls(this.text)
-              + '</div><div class="meta"><span class="when"><a href="http://twitter.com/'+this.user.screen_name+'/status/'+this.id+'">' 
+        var text = this.text;
+        if(this.truncated && this.retweeted_status) {
+          text = text.match(/^RT[^:]+:\s/i)[0] + this.retweeted_status.text;
+        }
+        html += '<li class="item'+i+'"><div class="text">' + $.grfLinkifyUrls(text)
+              + '</div><div class="meta"><span class="when"><a href="http://twitter.com/'+u+'/status/'+this.id+'">' 
               + $.grfTimeAgo(this.created_at)+'</a></span>';
         if(this.source) { html += ' <span class="source">via '+this.source+'</span>'; }
         if(this.place) {
@@ -46,7 +50,7 @@ var MODULES = [
         }
         html += '.</div></li>';
       });
-      this.$content.html(html+'</ol>');
+      this.$content.html('<ol>'+html+'</ol>');
     }
   },
 
@@ -66,8 +70,7 @@ var MODULES = [
       this.getYQL("select title,link,pubDate from rss where url in ('"+urls.join("','")+"') | sort(field='pubDate', descending='true')");
     },
     JSONpCallback: function(data) {
-      console.debug(data);
-      var html = '<ol>';
+      var html = '';
       $.each(data.query.results.item.splice(0,this._MAXITEMS),function(i){
         var url, m = this.link.match(/(yfrog|twitpic)\.com\/(.+)$/);
         switch(m[1]) {
@@ -79,7 +82,7 @@ var MODULES = [
                 + '" height="75" width="75" alt="" /></a></li>';
         }
       });
-      this.$content.html(html+'</ol>');
+      this.$content.html('<ol>'+html+'</ol>');
     }
   },
 
@@ -94,12 +97,12 @@ var MODULES = [
       this.getFeed('http://api.flickr.com/services/feeds/photos_faves.gne?id='+this._ID+'&format=rss_200');
     },
     JSONpCallback: function(data) {
-      var html = '<ol>';
+      var html = '';
       $.each(data.query.results.item.splice(0,this._MAXITEMS),function(i){
         html += '<li class="item'+i+'"><a href="'+this.link+'" title="'+this.title[0]+'"><img src="'+this.thumbnail.url
               + '" height="'+this.thumbnail.height+'" width="'+this.thumbnail.width+'" alt="" /></a></li>';
       });
-      this.$content.html(html+'</ol>');
+      this.$content.html('<ol>'+html+'</ol>');
     }
   },
 
@@ -117,13 +120,13 @@ var MODULES = [
     },
 
     JSONpCallback: function(data) {
-      var html = '<ol>', tprefix = this._USERNAME+' pushed to ';
+      var html = '', tprefix = this._USERNAME+' pushed to ';
       $.each(data.query.results.entry,function(i){
         html += '<li class="item'+i+'"><p class="when">' + $.grfTimeAgo(this.published) + '</p>'
               + '<p class="title">' + this.title.replace(tprefix,'') + '</p>' 
               + this.content.content + '</li>';
       });
-      this.$content.html(html+'</ol>');
+      this.$content.html('<ol>'+html+'</ol>');
     }
   },
 
@@ -141,14 +144,13 @@ var MODULES = [
     },
 
     JSONpCallback: function(data) {
-      var html = '<ol>';
+      var html = '';
       $.each(data.query.results.item,function(i){
-        // console.log(this);
         html += '<li class="item'+i+'"><p class="when">' + $.grfTimeAgo(this.pubDate) + '</p>'
               + '<p class="title"><a href="' + this.link + '">' + this.title + '</a></p>' 
               + '<p class="details">' + $.grfShortenString(this.description,100) + '</p></li>';
       });
-      this.$content.html(html+'</ol>');
+      this.$content.html('<ol>'+html+'</ol>');
     }
   }
 
