@@ -8,9 +8,9 @@ body {
 }
 .adsense {
   text-align:center;
-  background-color:white;
+/*  background-color:white;
   border:1px inset gray;
-  margin:0 5px;
+  margin:0 5px;*/
 }
 strong {
   font-weight:bold;
@@ -21,9 +21,11 @@ em {
 .small {
   font-size:85%;
 }
-h1 {
+#randomtitle h1 {
   text-align:center;
   font: bold 345%/2em 'Lobster', arial, serif;
+  white-space:nowrap;
+  display:none;
 }
 a {
   text-decoration:none;
