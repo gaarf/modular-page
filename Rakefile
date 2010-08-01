@@ -6,15 +6,12 @@ class LineCommands
   require 'yui/compressor' # http://github.com/sstephenson/ruby-yui-compressor
 
   def compress(line, path, mode=nil)
-    puts " - COMPRESS #{path}"
     mode ||= extract_suffix(path)
     compressor = (mode == :css) ? YUI::CssCompressor.new : YUI::JavaScriptCompressor.new(:munge => true)
-    file = File.new(path)
-    compressor.compress(file.read)
+    compressor.compress(include(line,path))
   end
 
   def include(line, path)
-    puts " - INCLUDE #{path}"
     file = File.new(path)
     file.read
   end
@@ -45,7 +42,7 @@ end
 desc "generate stand-alone page.html"
 task :generate_html => ["build"] do
   
-  puts "loading index.html..."
+  puts "processing lines with ### RAKE command [args] ### in index.html..."
   indexhtml = File.new('index.html')
   n = 1
   output = ''
@@ -55,8 +52,8 @@ task :generate_html => ["build"] do
     if m = line[/###\s*RAKE\s+(.+)\s*###/i,1]
       args = m.strip.split
       command = args.shift.downcase.to_sym
-      puts "\nfound command \"#{command}\" on line ##{n}"
       begin
+        puts "[#{n}] #{command}"
         line = processor.send(command,line,args.join(' '))
       rescue Exception => e
         puts "! error running \"#{command}\" !"
