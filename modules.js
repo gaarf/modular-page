@@ -1,4 +1,4 @@
-MODULES = [
+var MODULES = [
 
   { 
     sKey: 'welcome',

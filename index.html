@@ -9,16 +9,16 @@
   <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.1/build/reset-fonts/reset-fonts.css" />
   <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Lobster" />
 
-  <link rel="stylesheet" type="text/css" href="style.css" />
+  <link rel="stylesheet" type="text/css" href="style.css" /> <!-- ### RAKE inline ### -->
 
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
-  <script type="text/javascript" src="lib/jqDnR-touch/jqdnr.js"></script>
   <script type="text/javascript" src="http://platform.twitter.com/anywhere.js?id=6OBf6rxxfj8QrWs5T3tHw&amp;v=1"></script>
 
-  <script type="text/javascript" src="grfModuleSet.js"></script> <!-- core page code -->
-  <script type="text/javascript" src="modules.js"></script> <!-- defines MODULES -->
+  <script type="text/javascript" src="lib/jqDnR-touch/jqdnr.js"></script> <!-- ### RAKE inline ### -->
+  <script type="text/javascript" src="grfModuleSet.js"></script> <!-- ### RAKE inline ### core page code -->
+  <script type="text/javascript" src="modules.js"></script> <!-- ### RAKE delete ### -->
 
-  <script>
+  <script type="text/javascript">
   jQuery(document).ready(function($){
 
     if (!window.console) {
@@ -28,7 +28,11 @@
       for (var i = 0; i < names.length; ++i) { window.console[names[i]] = function() {}; }
     }
 
-    $('#modules').grfModuleSet(MODULES, 1);
+    var BUILD = 1; // ### RAKE delete ###
+    // ### RAKE eval "var BUILD = #{Time.now.to_i};" ###
+    // ### RAKE compress modules.js ###
+
+    $('#modules').grfModuleSet(MODULES, BUILD);
 
     if(twttr) {
       twttr.anywhere(function(T) {
