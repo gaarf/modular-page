@@ -13,6 +13,12 @@ class LineCommands
     compressor.compress(file.read)
   end
 
+  def include(line, path)
+    puts " - INCLUDE #{path}"
+    file = File.new(path)
+    file.read
+  end
+
   def inline(line,a)
     return line unless path = line[/(link rel="stylesheet"|script).*(href|src)="([^"]+)"/i,3]
     case extract_suffix(path)

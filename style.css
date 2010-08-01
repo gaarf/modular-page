@@ -8,6 +8,9 @@ body {
 }
 .adsense {
   text-align:center;
+  background-color:white;
+  border:1px inset gray;
+  margin:0 5px;
 }
 strong {
   font-weight:bold;
