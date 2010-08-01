@@ -41,6 +41,7 @@ ul.grf-modcontainer {
   border-radius:0 0 0 6px;
   -moz-border-radius:0 0 0 6px;
   -webkit-border-radius:0 0 0 6px;
+  -webkit-border-bottom-left-radius: 6px;
 }
 .grf-modcontainer li.mod div.resizer {
   position:absolute;
