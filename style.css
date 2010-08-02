@@ -1,10 +1,13 @@
+@import url(http://fonts.googleapis.com/css?family=Lobster);
+
 html {
   background: #EEE -moz-linear-gradient( left center, #666 0%, #fff 50%, #666 100% );
   background-image: -webkit-gradient( linear, left top, right top, color-stop(0, #666), color-stop(0.5, #fff), color-stop(1, #666) );
 }
 body {
   width:800px;
-  margin:10px auto;
+  _width:806px;
+  margin:0 auto 10px;
 }
 .adsense {
   text-align:center;
@@ -18,6 +21,10 @@ strong {
 em {
   font-style:italic;
 }
+acronym {
+  border-bottom:1px dotted gray;
+  cursor: help;
+}
 .small {
   font-size:85%;
 }
@@ -25,6 +32,8 @@ em {
   text-align:center;
   font: bold 345%/2em 'Lobster', arial, serif;
   white-space:nowrap;
+}
+#randomtitle span {
   display:none;
 }
 a {
@@ -38,6 +47,7 @@ ul.grf-modcontainer {
   -moz-user-select: -moz-none;
   -webkit-user-select: none;
   margin-bottom:30px;
+  zoom:1;
 }
 .grf-modcontainer li.mod {
   position:relative; 

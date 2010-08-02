@@ -4,13 +4,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=8">
   <meta charset="utf-8" />
 
-  <meta name="description" content="All about Adrien, delicately gathered around the web by JSONP, and wrapped in a draggable user interface." />
-  <meta name="keywords" content="Javascript, CSS, Hack, Drag and Resize, jqDnR, Twitter" />
-  <meta name="author" content="Adrien aka @gaarf" />
-  <title>Gaarf's Modular Homepage</title>
+  <meta name="keywords" content="Javascript, CSS, HTML, Drag and Resize, jqDnR, Twitter" />
+  <meta name="author" content="Adrien aka @gaarf - http://github.com/gaarf/modular-page/" />
+  <title>gaarf.info - Modular Homepage</title>
 
   <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.1/build/reset-fonts/reset-fonts.css" />
-  <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Lobster" />
 
   <link rel="stylesheet" type="text/css" href="style.css" /> <!-- ### RAKE inline ### -->
 
@@ -37,7 +35,7 @@
 
     $('#modules').grfModuleSet(MODULES, BUILD);
 
-    var $titles = $('#randomtitle h1');
+    var $titles = $('#randomtitle span');
     $titles.eq(Math.floor(Math.random()*$titles.size())).show();
 
     if(twttr) {
@@ -52,11 +50,14 @@
 <body>
   
   <div id="randomtitle">
-    <h1>Hi, I'm Adrien, maker of browser stuffs.</h1>
-    <h1>Drag some modules around!</h1>
-    <h1>Hover over @Twitter handles.</h1>
-    <h1>The source is on GitHub.</h1>
-    <h1>Hey, look! an ad!</h1>
+    <h1>
+      <span>Hello. I made this.</span>
+      <span>I &hearts; Javascript+CSS</span>
+      <span>Drag &amp; resize some modules!</span>
+      <span>Hover over some @Twitter handles.</span>
+      <span>The unmunged source is on GitHub.</span>
+      <span>Et voil&agrave;!</span>
+    </h1>
   </div>
 
   <noscript>

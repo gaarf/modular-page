@@ -1,1 +1,6 @@
 a Modular home page for http://gaarf.info
+
+built using http://github.com/gaarf/jqDnR-touch
+
+This page is pure Javascript, built using jQuery and @anywhere. All interface elements are done with lovingly hand-crafted CSS. Data is pulled by the browser, thanks to YQL's JSONP support. Modules can be dragged around, and some can be resized. For browsers that supports http://dev.w3.org/html5/webstorage, module positioning is memorized for the next visit. It works on iPad.
+
