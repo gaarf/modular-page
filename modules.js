@@ -5,9 +5,9 @@ var MODULES = [
     title: 'Welcome!',
     css: {width:'788px'},
     initBefore: function() {
-      var html = '<p>This page is pure Javascript, built using @jQuery and @anywhere. All interface elements are done with lovingly hand-crafted CSS. Data is pulled by your browser, thanks to @YQL\'s JSONP support. Modules can be dragged around, and some can be resized.</p><p>It works on all major browsers including <acronym title="Internet Exploder">IE6</acronym> and <acronym title="iPhone/iPad/iPod touch">iOS</acronym>, thanks to <strong>jqDnR-touch</strong>, a little library that you can <a href="http://github.com/gaarf/jqDnR-touch">fork on github</a>.</p>';
+      var html = '<p>This page is just <acronym title="ECMAScript">JS</acronym> and <acronym title="Cascading Style Sheets">CSS</acronym>, built using @jQuery, @YQL, and @anywhere. The code is served in a single static <acronym title="HyperText Markup Language">HTML</acronym> document with no processing by the server. Data is pulled by your browser via <acronym title="JavaScript Object Notation with Padding">JSONP</acronym>. <strong>Modules can be dragged around</strong>, and some can be resized. It works on all major browsers including <acronym title="Internet Exploder">IE6</acronym> and <acronym title="iPhone/iPad/iPod touch">iOS</acronym>, thanks to <strong>jqDnR-touch</strong>, a little library that you can <a href="http://github.com/gaarf/jqDnR-touch">fork on github</a>.</p>';
       if(window.localStorage) {
-          html += '<p class="small">Your browser supports <a href="http://dev.w3.org/html5/webstorage/">Web Storage</a>, so module positioning will be memorized for your next visit. Drag some modules &amp; reload the page to see!</p>'
+          html += '<p class="small">Your browser supports <a href="http://dev.w3.org/html5/webstorage/">Web Storage</a>, so module positioning will be memorized for your next visit. Drag some modules &amp; <strong>reload the page to see</strong>!</p>'
       }
       this.$content.html(html);
     }
@@ -23,7 +23,7 @@ var MODULES = [
 
     initBefore: function() {
       this.getJSONp('http://api.twitter.com/1/statuses/user_timeline.json?screen_name='+this._USERNAME+'&count='+this._MAXITEMS+'&trim_user=1&include_rts=1&callback=?');
-      this.$node.find('h2').append(' / @'+this._USERNAME+'<span class="btn"><a href="http://twitter.com/share" class="twitter-share-button" data-count="none" data-via="'+this._USERNAME+'">Tweet</a></span>');
+      this.$node.find('h2').append(' / @'+this._USERNAME+'<span class="btn"><a href="http://twitter.com/share" class="twitter-share-button" data-count="none" data-via="'+this._USERNAME+'">T</a></span>');
       
     },
 
