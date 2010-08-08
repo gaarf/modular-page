@@ -105,11 +105,6 @@ ul.grf-modcontainer {
 /* --- WELCOME MODULE ------------------------------------------------------------------------------ */
 .grf-modcontainer li.welcome p {
   margin:6px 0;
-}
-
-/* --- LOREM IPSUM ------------------------------------------------------------------------------ */
-.grf-modcontainer li.lorem p {
-  margin-bottom:.6em;
   text-align: justify; 
 }
 
@@ -120,26 +115,29 @@ ul.grf-modcontainer {
 }
 
 /* --- TWITTER ------------------------------------------------------------------------------ */
+
+.grf-modcontainer li.twitter h2 span.btn {
+  display:block;
+  position:absolute; top:2px; right:2px;
+}
+
 .grf-modcontainer li.twitter ol li {
   padding:10px 0;
   border-top:1px dotted #CCC;
 }
 .grf-modcontainer li.twitter ol li.item0 {  border-top:0px none; padding-top:5px; }
 
-.grf-modcontainer li.twitter ol li .text { font-size: 77%; line-height:1.1em; }
-.grf-modcontainer li.twitter ol li.item0 .text { font-size: 250%; }
-.grf-modcontainer li.twitter ol li.item1 .text { font-size: 140%; }
-.grf-modcontainer li.twitter ol li.item2 .text { font-size: 130%; }
-.grf-modcontainer li.twitter ol li.item3 .text { font-size: 120%; }
-.grf-modcontainer li.twitter ol li.item4 .text { font-size: 110%; }
-.grf-modcontainer li.twitter ol li.item5 .text { font-size: 100%; }
-.grf-modcontainer li.twitter ol li.item6 .text { font-size: 92%; }
-.grf-modcontainer li.twitter ol li.item7 .text { font-size: 85%; }
+.grf-modcontainer li.twitter ol li .text { font-size: 77%; line-height:1.1em; margin-bottom:.1em;}
+.grf-modcontainer li.twitter ol li.item0 .text { font-size: 200%; }
+.grf-modcontainer li.twitter ol li.item1 .text { font-size: 150%; }
+.grf-modcontainer li.twitter ol li.item2 .text { font-size: 100%; }
+.grf-modcontainer li.twitter ol li.item3 .text { font-size: 92%; }
+.grf-modcontainer li.twitter ol li.item4 .text { font-size: 85%; }
 
 
 .grf-modcontainer li.twitter ol .meta {
   font-size:77%; color:gray;
-  margin-top:.5em; line-height:1em;
+  line-height:1em;
 }
 .grf-modcontainer li.twitter ol .meta a {
   color:gray;

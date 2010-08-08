@@ -196,9 +196,6 @@
       else{ when = Math.floor(ss/2592000)+" months ago"; } } } } }
       return when;
     },
-    grfShortenString: function(input,len){
-      return input.length<=len ? input : input.substr(0,len-3)+'...';
-    },
     grfLinkifyUrls: function(input){
       return input.toString().replace( /https?:\/\/[^\s]+/g, function(a) { return '<a href="'+a+'">'+a+'</a>'; } );
     }

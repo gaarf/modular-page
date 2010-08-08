@@ -15,19 +15,20 @@ var MODULES = [
 
   { 
     sKey: 'twitter',
-    title: 'twttr',
+    title: 'Twitter',
     _USERNAME: 'gaarf',
     _MAXITEMS: 10,
-    css: {height:'710px',width:'290px'},
+    css: {height:'600px',width:'290px'},
     resizable: true,
 
     initBefore: function() {
       this.getJSONp('http://api.twitter.com/1/statuses/user_timeline.json?screen_name='+this._USERNAME+'&count='+this._MAXITEMS+'&trim_user=1&include_rts=1&callback=?');
-      this.$node.find('h2').append(' - @'+this._USERNAME);
+      this.$node.find('h2').append(' / @'+this._USERNAME+'<span class="btn"><a href="http://twitter.com/share" class="twitter-share-button" data-count="none" data-via="'+this._USERNAME+'">Tweet</a></span>');
+      
     },
 
     JSONpCallback: function(data) {
-      var html = '', u = this._USERNAME;
+      var u = this._USERNAME, html = '';
       $.each(data,function(i){
         var text = this.text;
         if(this.truncated && this.retweeted_status) {
@@ -106,38 +107,38 @@ var MODULES = [
     }
   },
 
-  { 
-    sKey: 'github',
-    title: 'GitHub activity',
-    className: 'genericfeed',
-    _USERNAME: 'gaarf',
-    _MAXITEMS: 6,
-    resizable:true,
-    css: {height:'437px',width:'237px'},
-
-    initAfter: function() {
-      this.getFeed('http://github.com/'+this._USERNAME+'.atom',this._MAXITEMS);
-    },
-
-    JSONpCallback: function(data) {
-      var html = '', tprefix = this._USERNAME+' pushed to ';
-      $.each(data.query.results.entry,function(i){
-        html += '<li class="item item'+i+'"><p class="when">' + $.grfTimeAgo(this.published) + '</p>'
-              + '<p class="title">' + this.title.replace(tprefix,'') + '</p>' 
-              + this.content.content + '</li>';
-      });
-      this.$content.html('<ol>'+html+'</ol>');
-    }
-  },
+  // { 
+  //   sKey: 'github',
+  //   title: 'GitHub activity',
+  //   className: 'genericfeed',
+  //   _USERNAME: 'gaarf',
+  //   _MAXITEMS: 6,
+  //   resizable:true,
+  //   css: {height:'437px',width:'237px'},
+  // 
+  //   initAfter: function() {
+  //     this.getFeed('http://github.com/'+this._USERNAME+'.atom',this._MAXITEMS);
+  //   },
+  // 
+  //   JSONpCallback: function(data) {
+  //     var html = '', tprefix = this._USERNAME+' pushed to ';
+  //     $.each(data.query.results.entry,function(i){
+  //       html += '<li class="item item'+i+'"><p class="when">' + $.grfTimeAgo(this.published) + '</p>'
+  //             + '<p class="title">' + this.title.replace(tprefix,'') + '</p>' 
+  //             + this.content.content + '</li>';
+  //     });
+  //     this.$content.html('<ol>'+html+'</ol>');
+  //   }
+  // },
 
   { 
     sKey: 'blogposts',
     title: 'Blog Posts',
     className: 'genericfeed',
     _URL: 'http://gaarf.info/feed/',
-    _MAXITEMS: 6,
+    _MAXITEMS: 4,
     resizable:true,
-    css: {height:'437px',width:'237px'},
+    css: {height:'327px',width:'486px'},
 
     initAfter: function() {
       this.getFeed(this._URL,this._MAXITEMS);
@@ -148,25 +149,10 @@ var MODULES = [
       $.each(data.query.results.item,function(i){
         html += '<li class="item item'+i+'"><p class="when">' + $.grfTimeAgo(this.pubDate) + '</p>'
               + '<p class="title"><a href="' + this.link + '">' + this.title + '</a></p>' 
-              + '<p class="details">' + $.grfShortenString(this.description,100) + '</p></li>';
+              + '<p class="details">' + this.description + '</p></li>';
       });
       this.$content.html('<ol>'+html+'</ol>');
     }
   }
-
-  // { 
-  //   sKey: 'lorem',
-  //   title: 'Justified text!',
-  //   resizable:true,
-  //   css: {clear:'both',width:'788px'},
-  //   initBefore: function() {
-  //     this.$content.html('<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>');
-  //   },
-  // 
-  //   initAfter: function() {
-  //     this.$content.append('<p>Cras purus justo, blandit nec interdum vel, imperdiet eget ante. Donec libero risus, condimentum ut iaculis eu, lacinia et est. Nam hendrerit interdum congue. Phasellus metus eros, sodales quis condimentum facilisis, elementum nec sem. Cras blandit nulla convallis orci euismod tempor laoreet elit mollis. Nullam non sem nec odio sodales aliquam. Phasellus egestas lectus et est tincidunt semper.</p><p>Nulla facilisi. Fusce pellentesque erat non nunc facilisis sed gravida velit scelerisque. Aenean sed est eros. Ut ut pulvinar massa. Integer ut metus augue, id egestas augue. Phasellus nunc tortor, cursus vitae commodo quis, tempor in erat. Mauris vitae lectus sed lacus lacinia ullamcorper vitae bibendum mauris. Pellentesque ut consectetur lorem. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae...</p>');
-  //     this.doneLoading();
-  //   }
-  // }
 
 ];
