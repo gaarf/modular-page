@@ -5,9 +5,9 @@ var MODULES = [
     title: 'Welcome!',
     css: {width:'788px'},
     initBefore: function() {
-      var html = '<p>This page is just <acronym title="ECMAScript">JS</acronym> and <acronym title="Cascading Style Sheets">CSS</acronym>, built using @jQuery, @YQL, and @anywhere. The code is served in a single static <acronym title="HyperText Markup Language">HTML</acronym> document with no processing by the server. Data is pulled by your browser via <acronym title="JavaScript Object Notation with Padding">JSONP</acronym>. <strong>Modules can be dragged around</strong>, and some can be resized. It works on all major browsers including <acronym title="Internet Exploder">IE6</acronym> and <acronym title="iPhone/iPad/iPod touch">iOS</acronym>, thanks to <strong>jqDnR-touch</strong>, a little library that you can <a href="http://github.com/gaarf/jqDnR-touch">fork on github</a>.</p>';
+      var html = '<p>This page is just <acronym title="ECMAScript">JavaScript</acronym> and <acronym title="Cascading Style Sheets">CSS</acronym>, built with @jQuery, @YQL, @anywhere, and no server-side processing.</p><p>All data is pulled by your browser via <acronym title="JavaScript Object Notation with Padding">JSONP</acronym>. Modules can be dragged around, and some can be resized. It works on all major browsers including <acronym title="Internet Exploder">IE6</acronym> and <acronym title="iPhone/iPad/iPod touch">iOS</acronym>, thanks to <strong>jqDnR-touch</strong>, a little library that you can <a href="http://github.com/gaarf/jqDnR-touch">fork on github</a>.</p>';
       if(window.localStorage) {
-          html += '<p class="small">Your browser supports <a href="http://dev.w3.org/html5/webstorage/">Web Storage</a>, so module positioning will be memorized for your next visit. Drag some modules &amp; <strong>reload the page to see</strong>!</p>'
+          html += '<p class="small">Your browser supports <a href="http://dev.w3.org/html5/webstorage/">Web Storage</a>, so module positioning will be memorized for your next visit. <strong>Reposition some modules &amp; reload the page to see</strong>!</p>'
       }
       this.$content.html(html);
     }
@@ -18,7 +18,7 @@ var MODULES = [
     title: 'Twitter',
     _USERNAME: 'gaarf',
     _MAXITEMS: 10,
-    css: {height:'600px',width:'290px'},
+    css: {height:'630px',width:'290px'},
     resizable: true,
 
     initBefore: function() {
@@ -138,7 +138,7 @@ var MODULES = [
     _URL: 'http://gaarf.info/feed/',
     _MAXITEMS: 4,
     resizable:true,
-    css: {height:'327px',width:'486px'},
+    css: {height:'357px',width:'486px'},
 
     initAfter: function() {
       this.getFeed(this._URL,this._MAXITEMS);
