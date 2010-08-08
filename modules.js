@@ -4,6 +4,7 @@ var MODULES = [
     sKey: 'welcome',
     title: 'Welcome!',
     css: {width:'788px'},
+    resizable:true,
     initBefore: function() {
       var html = '<p>This page is just <acronym title="ECMAScript">JavaScript</acronym> and <acronym title="Cascading Style Sheets">CSS</acronym>, built with @jQuery, @YQL, @anywhere, and no server-side processing.</p><p>All data is pulled by your browser via <acronym title="JavaScript Object Notation with Padding">JSONP</acronym>. Modules can be dragged around, and some can be resized. It works on all major browsers including <acronym title="Internet Exploder">IE6</acronym> and <acronym title="iPhone/iPad/iPod touch">iOS</acronym>, thanks to <strong>jqDnR-touch</strong>, a little library that you can <a href="http://github.com/gaarf/jqDnR-touch">fork on github</a>.</p>';
       if(window.localStorage) {
