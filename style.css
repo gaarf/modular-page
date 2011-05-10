@@ -1,9 +1,5 @@
 @import url(http://fonts.googleapis.com/css?family=Lobster);
 
-html {
-  background: #EEE -moz-linear-gradient( left center, #666 0%, #fff 50%, #666 100% );
-  background-image: -webkit-gradient( linear, left top, right top, color-stop(0, #666), color-stop(0.5, #fff), color-stop(1, #666) );
-}
 body {
   width:800px;
   _width:806px;

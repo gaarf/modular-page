@@ -1,25 +1,11 @@
 var MODULES = [
 
   { 
-    sKey: 'welcome',
-    title: 'Welcome!',
-    css: {width:'788px'},
-    resizable:true,
-    initBefore: function() {
-      var html = '<p>This page is just <acronym title="ECMAScript">JavaScript</acronym> and <acronym title="Cascading Style Sheets">CSS</acronym>, built with @jQuery, @YQL, @anywhere, and no server-side processing.</p><p>All data is pulled by your browser via <acronym title="JavaScript Object Notation with Padding">JSONP</acronym>. Modules can be dragged around, and some can be resized. It works on all major browsers including <acronym title="Internet Exploder">IE6</acronym> and <acronym title="iPhone/iPad/iPod touch">iOS</acronym>, thanks to <strong>jqDnR-touch</strong>, a little library that you can <a href="http://github.com/gaarf/jqDnR-touch">fork on github</a>.</p>';
-      if(window.localStorage) {
-          html += '<p class="small">Your browser supports <a href="http://dev.w3.org/html5/webstorage/">Web Storage</a>, so module positioning will be memorized for your next visit. <strong>Reposition some modules &amp; reload the page to see</strong>!</p>'
-      }
-      this.$content.html(html);
-    }
-  },
-
-  { 
     sKey: 'twitter',
     title: 'Twitter',
     _USERNAME: 'gaarf',
     _MAXITEMS: 10,
-    css: {height:'630px',width:'290px'},
+    css: {height:'610px',width:'290px'},
     resizable: true,
 
     initBefore: function() {
@@ -88,49 +74,49 @@ var MODULES = [
     }
   },
 
-  { 
-    sKey: 'flickr',
-    className: 'images',
-    _ID: '94765669@N00',
-    _MAXITEMS: 9,
-    css: {height:'261px',width:'237px'},
-
-    initAfter: function() {
-      this.getFeed('http://api.flickr.com/services/feeds/photos_faves.gne?id='+this._ID+'&format=rss_200');
-    },
-    JSONpCallback: function(data) {
-      var html = '';
-      $.each(data.query.results.item.splice(0,this._MAXITEMS),function(i){
-        html += '<li class="item item'+i+'"><a href="'+this.link+'" title="'+this.title[0]+'"><img src="'+this.thumbnail.url
-              + '" height="'+this.thumbnail.height+'" width="'+this.thumbnail.width+'" alt="" /></a></li>';
-      });
-      this.$content.html('<ol>'+html+'</ol>');
-    }
-  },
-
   // { 
-  //   sKey: 'github',
-  //   title: 'GitHub activity',
-  //   className: 'genericfeed',
-  //   _USERNAME: 'gaarf',
-  //   _MAXITEMS: 6,
-  //   resizable:true,
-  //   css: {height:'437px',width:'237px'},
+  //   sKey: 'flickr',
+  //   className: 'images',
+  //   _ID: '94765669@N00',
+  //   _MAXITEMS: 9,
+  //   css: {height:'261px',width:'237px'},
   // 
   //   initAfter: function() {
-  //     this.getFeed('http://github.com/'+this._USERNAME+'.atom',this._MAXITEMS);
+  //     this.getFeed('http://api.flickr.com/services/feeds/photos_faves.gne?id='+this._ID+'&format=rss_200');
   //   },
-  // 
   //   JSONpCallback: function(data) {
-  //     var html = '', tprefix = this._USERNAME+' pushed to ';
-  //     $.each(data.query.results.entry,function(i){
-  //       html += '<li class="item item'+i+'"><p class="when">' + $.grfTimeAgo(this.published) + '</p>'
-  //             + '<p class="title">' + this.title.replace(tprefix,'') + '</p>' 
-  //             + this.content.content + '</li>';
+  //     var html = '';
+  //     $.each(data.query.results.item.splice(0,this._MAXITEMS),function(i){
+  //       html += '<li class="item item'+i+'"><a href="'+this.link+'" title="'+this.title[0]+'"><img src="'+this.thumbnail.url
+  //             + '" height="'+this.thumbnail.height+'" width="'+this.thumbnail.width+'" alt="" /></a></li>';
   //     });
   //     this.$content.html('<ol>'+html+'</ol>');
   //   }
   // },
+
+  { 
+    sKey: 'github',
+    title: 'GitHub activity',
+    className: 'genericfeed',
+    _USERNAME: 'gaarf',
+    _MAXITEMS: 6,
+    resizable:true,
+    css: {height:'261px',width:'237px'},
+  
+    initAfter: function() {
+      this.getFeed('http://github.com/'+this._USERNAME+'.atom',this._MAXITEMS);
+    },
+  
+    JSONpCallback: function(data) {
+      var html = '', tprefix = this._USERNAME+' pushed to ';
+      $.each(data.query.results.entry,function(i){
+        html += '<li class="item item'+i+'"><p class="when">' + $.grfTimeAgo(this.published) + '</p>'
+              + '<p class="title">' + this.title.replace(tprefix,'') + '</p>' 
+              + this.content.content + '</li>';
+      });
+      this.$content.html('<ol>'+html+'</ol>');
+    }
+  },
 
   { 
     sKey: 'blogposts',
@@ -139,7 +125,7 @@ var MODULES = [
     _URL: 'http://gaarf.info/feed/',
     _MAXITEMS: 4,
     resizable:true,
-    css: {height:'357px',width:'486px'},
+    css: {height:'337px',width:'486px'},
 
     initAfter: function() {
       this.getFeed(this._URL,this._MAXITEMS);
@@ -153,6 +139,20 @@ var MODULES = [
               + '<p class="details">' + this.description + '</p></li>';
       });
       this.$content.html('<ol>'+html+'</ol>');
+    }
+  },
+
+  { 
+    sKey: 'welcome',
+    title: 'Welcome!',
+    css: {width:'788px'},
+    resizable:true,
+    initBefore: function() {
+      var html = '<p>This page is just <acronym title="ECMAScript">JavaScript</acronym> and <acronym title="Cascading Style Sheets">CSS</acronym>, built with @jQuery, @YQL, @anywhere, and no server-side processing.</p><p>All data is pulled by your browser via <acronym title="JavaScript Object Notation with Padding">JSONP</acronym>. Modules can be dragged around, and some can be resized. It works on all major browsers including <acronym title="Internet Exploder">IE6</acronym> and <acronym title="iPhone/iPad/iPod touch">iOS</acronym>, thanks to <strong>jqDnR-touch</strong>, a little library that you can <a href="http://github.com/gaarf/jqDnR-touch">fork on github</a>.</p>';
+      if(window.localStorage) {
+          html += '<p class="small">Your browser supports <a href="http://dev.w3.org/html5/webstorage/">Web Storage</a>, so module positioning will be memorized for your next visit. <strong>Reposition some modules &amp; reload the page to see</strong>!</p>'
+      }
+      this.$content.html(html);
     }
   }
 
