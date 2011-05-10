@@ -144,7 +144,7 @@ var MODULES = [
 
   { 
     sKey: 'welcome',
-    title: 'Welcome!',
+    title: 'About',
     css: {width:'788px'},
     resizable:true,
     initBefore: function() {
