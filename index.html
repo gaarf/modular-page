@@ -6,7 +6,7 @@
 
   <meta name="keywords" content="Javascript, CSS, HTML, Drag and Resize, jqDnR, Twitter" />
   <meta name="author" content="Adrien aka @gaarf - http://gaarf.info" />
-  <title>gaarf.info - Everything @gaarf</title>
+  <title>gaarf.info</title>
 
   <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.1/build/reset-fonts/reset-fonts.css" />
 
@@ -34,19 +34,18 @@
     // ### RAKE eval "var BUILD = #{Time.now.to_i};" ###
     // ### RAKE compress modules.js ###
 
-    $('#modules').grfModuleSet(MODULES, BUILD);
+    $('#modules').grfModuleSet(MODULES, BUILD, function() {
+      if(twttr) {
+        twttr.anywhere(function(T) {
+          T('body')[iOS?'linkifyUsers':'hovercards']();
+        });
+      }
+    });
 
     var iOS = navigator.userAgent.match(/Mobile.*Safari/),
         $titles = $('#randomtitle span'+(iOS?':not(.no_ios)':''));
 
     $titles.eq(Math.floor(Math.random()*$titles.size())).show();
-
-    if(twttr) {
-      twttr.anywhere(function(T) {
-        T('body')[iOS?'linkifyUsers':'hovercards']();
-      });
-    }
-
   });
   </script>
 </head>
@@ -55,10 +54,11 @@
   <div id="randomtitle">
     <h1>
       <span>Hello.</span>
-      <span>Bonjour.</span>
-      <span>I &hearts; Javascript+CSS</span>
+      <span>I make webapps &hearts; JavaScript+CSS.</span>
+      <span>This is my <em>modular</em> homepage.</span>
       <span>Drag &amp; resize some modules!</span>
-      <span>The unmunged source is on GitHub.</span>
+      <span>The unmunged <a href="https://github.com/gaarf/modular-page/">source</a> is on GitHub.</span>
+      <span>Bonjour.</span>
       <span class="no_ios">iPad, do you?</span>
       <span class="no_ios">Hover over some @Twitter handles.</span>
       <noscript> Javascript is required! </noscript>

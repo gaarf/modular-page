@@ -1,7 +1,7 @@
 ///////////// grf* sort-of-jQuery plugins /////////////////////////////////////////////////////////////
 
 (function($) {
-  $.fn.grfModuleSet = function(input,storageVersion){
+  $.fn.grfModuleSet = function(input,storageVersion, onCompletelyLoaded){
 
     if(this.length>1 || !this.is('ul') || !(input && input.length)) {
       throw "grfModuleSet: You're doing it wrong.";
@@ -9,12 +9,20 @@
 
     var $container = this.addClass('grf-modcontainer'), 
         _modules = {},
+        currentlyLoadingCount = 0,
         domStore = location.protocol.indexOf('http')===0 && window.localStorage;
+
+    function checkSetLoadState() {
+      if(currentlyLoadingCount===0 && onCompletelyLoaded) {
+        onCompletelyLoaded();
+      }
+    }
 
     function Module(o) {
       return $.extend({
 
         init: function() {
+          currentlyLoadingCount++;
           console.time(this.sKey);
           this.$node = $('<li class="loading mod '+(this.className || this.sKey)+'" />').data('sKey',this.sKey);
           this.$node.jqDrag($('<h2><span>'+(this.title || this.sKey)+'</span></h2>').appendTo(this.$node));
@@ -37,6 +45,8 @@
             $container.css('height',newHeight);
           }
           console.timeEnd(this.sKey);
+          currentlyLoadingCount--;
+          checkSetLoadState();
         },
 
         savePosition: function() {
