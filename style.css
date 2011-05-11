@@ -1,5 +1,8 @@
 @import url(http://fonts.googleapis.com/css?family=Lobster);
 
+html {
+  background-color:#EEE;
+}
 body {
   width:800px;
   _width:806px;
