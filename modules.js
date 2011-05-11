@@ -104,9 +104,9 @@ var MODULES = [
     css: {height:'261px',width:'237px'},
   
     initAfter: function() {
-      this.getFeed('http://github.com/'+this._USERNAME+'.atom',this._MAXITEMS);
+      this.getFeed('https://github.com/'+this._USERNAME+'.atom',this._MAXITEMS);
     },
-  
+
     JSONpCallback: function(data) {
       var html = '', tprefix = this._USERNAME+' pushed to ';
       $.each(data.query.results.entry,function(i){
@@ -114,7 +114,8 @@ var MODULES = [
               + '<p class="title">' + this.title.replace(tprefix,'') + '</p>' 
               + this.content.content + '</li>';
       });
-      this.$content.html('<ol>'+html+'</ol>');
+      var re = new RegExp("href=\"/"+this._USERNAME, 'gi');
+      this.$content.html('<ol>'+html.replace(re, "href=\"https://github.com/"+this._USERNAME)+'</ol>');
     }
   },
 
