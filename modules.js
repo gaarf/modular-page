@@ -60,18 +60,20 @@ var MODULES = [
         if(count >= max) {
           return false;
         }
-        var src,
-            url = this.expanded_url || this.url,
-            m = url.match(/(yfrog|twitpic)\.com\/(.+)$/);
-        if(m) {
-          switch(m[1]) {
-            case 'yfrog': src = url + '.th.jpg'; break;
-            case 'twitpic': src = 'http://twitpic.com/show/mini/'+m[2]; break;
-          }
-          if(src) {
-            html += '<li class="item item'+count+'"><a href="'+url+'"><img src="'+src
-                  + '" height="75" width="75" alt="" /></a></li>';
-            count++;
+        if(this) {
+          var src,
+              url = this.expanded_url || this.url,
+              m = url.match(/(yfrog|twitpic)\.com\/(.+)$/);
+          if(m) {
+            switch(m[1]) {
+              case 'yfrog': src = url + '.th.jpg'; break;
+              case 'twitpic': src = 'http://twitpic.com/show/mini/'+m[2]; break;
+            }
+            if(src) {
+              html += '<li class="item item'+count+'"><a href="'+url+'"><img src="'+src
+                    + '" height="75" width="75" alt="" /></a></li>';
+              count++;
+            }
           }
         }
       });
