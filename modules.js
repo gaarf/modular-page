@@ -51,23 +51,28 @@ var MODULES = [
     css: {height:'261px',width:'237px'},
 
     initAfter: function() {
-      var urls = [
-        'http://yfrog.com/rss.php?username='+this._USERNAME,
-        'http://twitpic.com/photos/'+this._USERNAME+'/feed.rss'
-      ];
-      this.getYQL("select title,link,pubDate from rss where url in ('"+urls.join("','")+"') | sort(field='pubDate', descending='true')");
+      this.getYQL('select * from json where url="http://api.twitter.com/1/statuses/user_timeline.json?screen_name=' + this._USERNAME + '&trim_user=1&count=100&include_entities=1" and itemPath = "json.json.entities.urls"');
     },
+
     JSONpCallback: function(data) {
-      var html = '';
-      $.each(data.query.results.item.splice(0,this._MAXITEMS),function(i){
-        var url, m = this.link.match(/(yfrog|twitpic)\.com\/(.+)$/);
-        switch(m[1]) {
-          case 'yfrog': url = this.link + '.th.jpg'; break;
-          case 'twitpic': url = 'http://twitpic.com/show/mini/'+m[2]; break;
+      var html = '', count = 0, max = this._MAXITEMS;
+      $.each(data.query.results.urls, function(){
+        if(count >= max) {
+          return false;
         }
-        if(url) {
-          html += '<li class="item item'+i+'"><a href="'+this.link+'" title="'+this.title+'"><img src="'+url
-                + '" height="75" width="75" alt="" /></a></li>';
+        var src,
+            url = this.expanded_url || this.url,
+            m = url.match(/(yfrog|twitpic)\.com\/(.+)$/);
+        if(m) {
+          switch(m[1]) {
+            case 'yfrog': src = url + '.th.jpg'; break;
+            case 'twitpic': src = 'http://twitpic.com/show/mini/'+m[2]; break;
+          }
+          if(src) {
+            html += '<li class="item item'+count+'"><a href="'+url+'"><img src="'+src
+                  + '" height="75" width="75" alt="" /></a></li>';
+            count++;
+          }
         }
       });
       this.$content.html('<ol>'+html+'</ol>');
