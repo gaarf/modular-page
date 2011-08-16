@@ -51,35 +51,81 @@ var MODULES = [
     css: {height:'261px',width:'237px'},
 
     initAfter: function() {
-      this.getYQL('select * from json where url="http://api.twitter.com/1/statuses/user_timeline.json?screen_name=' + this._USERNAME + '&trim_user=1&count=100&include_entities=1" and itemPath = "json.json.entities.urls"');
+      this.getJSONp('http://api.twitter.com/1/statuses/user_timeline.json?screen_name=' + this._USERNAME + '&trim_user=1&count=100&include_entities=1&callback=?');
     },
 
     JSONpCallback: function(data) {
       var html = '', count = 0, max = this._MAXITEMS;
-      $.each(data.query.results.urls, function(){
+      $.each(data, function(){
         if(count >= max) {
           return false;
         }
-        if(this) {
-          var src,
-              url = this.expanded_url || this.url,
-              m = url.match(/(yfrog|twitpic)\.com\/(.+)$/);
-          if(m) {
-            switch(m[1]) {
-              case 'yfrog': src = url + '.th.jpg'; break;
-              case 'twitpic': src = 'http://twitpic.com/show/mini/'+m[2]; break;
+        var urls = this.entities.urls;
+        if(urls && urls.length) {
+          $.each(urls, function() {
+            if(count >= max) {
+              return false;
             }
-            if(src) {
-              html += '<li class="item item'+count+'"><a href="'+url+'"><img src="'+src
-                    + '" height="75" width="75" alt="" /></a></li>';
-              count++;
+            var src,
+                url = this.expanded_url || this.url,
+                m = url.match(/(yfrog|twitpic)\.com\/(.+)$/);
+            if(m) {
+              switch(m[1]) {
+                case 'yfrog': src = url + '.th.jpg'; break;
+                case 'twitpic': src = 'http://twitpic.com/show/mini/'+m[2]; break;
+              }
+              if(src) {
+                html += '<li class="item item'+count+'"><a href="'+url+'"><img src="'+src
+                      + '" height="75" width="75" alt="" /></a></li>';
+                count++;
+              }
             }
-          }
+          });
         }
       });
       this.$content.html('<ol>'+html+'</ol>');
     }
   },
+
+  // { 
+  //   sKey: 'twimages',
+  //   className: 'images',
+  //   title: 'Tweeted Images',
+  //   _USERNAME: 'gaarf',
+  //   _MAXITEMS: 9,
+  //   css: {height:'261px',width:'237px'},
+  // 
+  //   initAfter: function() {
+  //     this.getYQL('select * from json where url="http://api.twitter.com/1/statuses/user_timeline.json?screen_name=' + this._USERNAME + '&trim_user=1&count=100&include_entities=1" and itemPath = "json.json.entities.urls"');
+  //   },
+  // 
+  //   JSONpCallback: function(data) {
+  //     var html = '', count = 0, max = this._MAXITEMS;
+  //     if(data.query.results.error) return;
+  //     $.each(data.query.results.urls, function(){
+  //       if(count >= max) {
+  //         return false;
+  //       }
+  //       if(this) {
+  //         var src,
+  //             url = this.expanded_url || this.url,
+  //             m = url.match(/(yfrog|twitpic)\.com\/(.+)$/);
+  //         if(m) {
+  //           switch(m[1]) {
+  //             case 'yfrog': src = url + '.th.jpg'; break;
+  //             case 'twitpic': src = 'http://twitpic.com/show/mini/'+m[2]; break;
+  //           }
+  //           if(src) {
+  //             html += '<li class="item item'+count+'"><a href="'+url+'"><img src="'+src
+  //                   + '" height="75" width="75" alt="" /></a></li>';
+  //             count++;
+  //           }
+  //         }
+  //       }
+  //     });
+  //     this.$content.html('<ol>'+html+'</ol>');
+  //   }
+  // },
 
   // { 
   //   sKey: 'flickr',
