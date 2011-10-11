@@ -161,7 +161,7 @@ var MODULES = [
     },
 
     JSONpCallback: function(data) {
-      console.log(data);
+      if(!data.query.results) return this.$node.hide();
       var html = '';
       $.each(data.query.results.entry,function(i){
         console.log(this);
