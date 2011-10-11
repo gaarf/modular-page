@@ -161,10 +161,12 @@ var MODULES = [
     },
 
     JSONpCallback: function(data) {
-      var html = '', tprefix = this._USERNAME+' pushed to ';
+      console.log(data);
+      var html = '';
       $.each(data.query.results.entry,function(i){
+        console.log(this);
         html += '<li class="item item'+i+'"><p class="when">' + $.grfTimeAgo(this.published) + '</p>'
-              + '<p class="title">' + this.title.replace(tprefix,'') + '</p>' 
+              + '<p class="title">' + this.title.content + '</p>' 
               + this.content.content + '</li>';
       });
       var re = new RegExp("href=\"/"+this._USERNAME, 'gi');
