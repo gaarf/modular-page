@@ -1,5 +1,3 @@
-@import url(http://fonts.googleapis.com/css?family=Lobster);
-
 html {
   background-color:#EEE;
 }
@@ -27,20 +25,21 @@ acronym {
 .small {
   font-size:85%;
 }
-#randomtitle h1 {
-  text-align:center;
-  font: bold 345%/2em 'Lobster', arial, serif;
-  white-space:nowrap;
-}
-#randomtitle span {
-  display:none;
-}
 a {
   text-decoration:none;
 }
 a:hover {
   text-decoration:underline;
 }
+
+header,
+footer {
+  text-align: center;
+  font-size: 10px;
+}
+
+
+
 ul.grf-modcontainer {
   position:relative;
   -moz-user-select: -moz-none;

@@ -42,33 +42,18 @@
       }
     });
 
-    var iOS = navigator.userAgent.match(/Mobile.*Safari/),
-        $titles = $('#randomtitle span'+(iOS?':not(.no_ios)':''));
-
-    $titles.eq(Math.floor(Math.random()*$titles.size())).show();
   });
   </script>
 </head>
 <body>
-  
-  <div id="randomtitle">
-    <h1>
-      <span>Hello.</span>
-      <span>I make webapps &hearts; JavaScript+CSS.</span>
-      <span>This is my <em>modular</em> homepage.</span>
-      <span>Drag &amp; resize some modules!</span>
-      <span>The unmunged <a href="https://github.com/gaarf/modular-page/">source</a> is on GitHub.</span>
-      <span>Bonjour.</span>
-      <span class="no_ios">iPad, do you?</span>
-      <span class="no_ios">Hover over some @Twitter handles.</span>
-      <noscript> Javascript is required! </noscript>
-    </h1>
-  </div>
-
 
   <ul id="modules"></ul>
 
   <!-- ### RAKE include google.inc ### adsense + analytics -->
+
+  <footer>
+    <a href="https://github.com/gaarf/modular-page/">Drag some modules around!</a>
+  </footer>
 
 </body>
 </html>
